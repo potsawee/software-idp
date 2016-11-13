@@ -12,28 +12,26 @@ using namespace std;
 robot_link  rlink;                            // datatype for the robot link
 stopwatch watch;
 
-int main ()
-{
-int  val;                                // data from microprocessor
+int main (){
 
-#ifdef __arm__
-    if (!rlink.initialise ()) {          // setup for local hardware
-		cout << "Cannot initialise link..robot case" << endl;
-		rlink.print_errs("    ");
-		return -1;
+	#ifdef __arm__
+		if (!rlink.initialise ()) {          // setup for local hardware
+			cout << "Cannot initialise link..robot case" << endl;
+			rlink.print_errs("    ");
+			return -1;
+		}
+	#else
+		if (!rlink.initialise (ROBOT_NUM)) { // setup the link
+			cout << "Cannot initialise link...pc case" << endl;
+			rlink.print_errs("    ");
+			return -1;
+		}
+	#endif
+	int val = rlink.request (TEST_INSTRUCTION); 
+	
+	if (val == TEST_INSTRUCTION_RESULT) {     // check result
+		cout << "Test passed" << endl;                          // all OK, finish
 	}
-#else
-    if (!rlink.initialise (ROBOT_NUM)) { // setup the link
-		cout << "Cannot initialise link...pc case" << endl;
-		rlink.print_errs("    ");
-		return -1;
-	}
-#endif
-
-val = rlink.request (TEST_INSTRUCTION); 
-if (val == TEST_INSTRUCTION_RESULT) {     // check result
-	cout << "Test passed" << endl;                          // all OK, finish
-}
 
 // call function move_s_to_p();
 // call function activate_actuator(); // this will grab an object this should return 1 if the object contains flashing; otherwise 0.
@@ -49,7 +47,7 @@ if (val == TEST_INSTRUCTION_RESULT) {     // check result
 
 
 
-return 0;  
+	return 0;  
 }  
 
 
