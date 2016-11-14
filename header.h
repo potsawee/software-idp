@@ -25,6 +25,7 @@ void place_object2(); //to place a casting at either DF or DH.
 
 //// Functions in line_following.cc ////
 void ajust_initial_position();
+void read_sensors();
 void follow_line_count_when_pass_junc();
 void follow_line_til_junc();
 void follow_turn_right();
@@ -56,14 +57,27 @@ enum location {
 	P
 };
 
+enum line_following_sensor {
+    B = 0, // B means black
+    W      // W means white
+};
+
 class robot_status {
 	public:
 		casting_type casting;
 		int job_done;
 		location destination;
 		int junctions_passed;
-                int no_of_complete_test;
+        int no_of_complete_test;
 
+};
+
+class sensor_status {
+    public:
+        line_following_sensor left;
+        line_following_sensor mid;
+        line_following_sensor right;
+    
 };
 
 
@@ -71,7 +85,6 @@ class robot_status {
 extern robot_link rlink; 
 extern stopwatch watch;
 extern robot_status rstatus;
-
-
+extern sensor_status rsensor;
 
 #endif
