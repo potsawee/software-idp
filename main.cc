@@ -4,13 +4,13 @@
 #include <stopwatch.h>
 #include <delay.h>
 #include <iomanip>
-
-
+#include "header.h"
 using namespace std;
 
 #define ROBOT_NUM  16                         // The id number (see below)
 robot_link  rlink;                            // datatype for the robot link
 stopwatch watch;
+robot_status rstatus;
 
 int main (){
 
@@ -45,7 +45,8 @@ int main (){
 // with information about the case, execute route_back 1,2,3 etc;
 // if not done goes to the first command i.e. move_s_to_p
 
-
+  
+    
 
 	return 0;  
 }  
