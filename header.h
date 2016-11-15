@@ -24,10 +24,10 @@ void place_object2(); //to place a casting at either DF or DH.
 
 
 //// Functions in line_following.cc ////
-void ajust_initial_position();
+void adjust_initial_position();
 void read_sensors();
-void follow_line_count_when_pass_junc();
-void follow_line_til_junc();
+void follow_forwards(int n); // stop at the n-th junction (1 means the first junction)
+void follow_backwards(int n); // stop at the n-th junction
 void follow_turn_right();
 void follow_turn_left();
 
@@ -38,12 +38,14 @@ void go_backwards(int speed); // from 0 (lowest) to 126 (highest)
 void turn_left();
 void turn_right();
 void stop();
+void set_motors(int v1, int v2);
 
 
 
 //// Enums & Classes ////
 enum casting_type {
-	GOOD = 1,
+	NONE = 0,
+	GOOD,
 	HOT,
 	FLASHING
 };
@@ -67,9 +69,12 @@ class robot_status {
 		casting_type casting;
 		int job_done;
 		location destination;
-		int junctions_passed;
-        int no_of_complete_test;
-
+		//construtor
+		robot_status(){
+			casting = NONE;
+			job_done = 0;
+			destination = P;
+		}
 };
 
 class sensor_status {

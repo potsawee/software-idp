@@ -1,5 +1,5 @@
 #include "header.h"
-
+using namespace std;
 
 
 void ajust_initial_position(){
@@ -9,32 +9,59 @@ void ajust_initial_position(){
 }
 
 void read_sensors(){
-    rsensor.left = (rlink.command(READ_PORT_5) && 0x04) >> 2;
-    rsensor.mid = (rlink.command(READ_PORT_5) && 0x02) >> 1;
-    rsensor.right = (rlink.command(READ_PORT_5) && 0x04);
+	int s = rlink.request(READ_PORT_5);
+	if(s bitand 0x01){
+		rsensor.right = W;
+	} else {
+		rsensor.right = B;
+	}
+	if(s bitand 0x02){
+		rsensor.mid = W;
+	} else {
+		rsensor.mid = B;
+	}
+	if(s bitand 0x04){
+		rsensor.left = W;
+	}else {
+		rsensor.left = B;
+	}
 }
 	
-void follow_line_count_when_pass_junc() //the sensor will send several values when passing one junction! so use time to control that.
-{
-	//(punpun) I think we don't need a function for this. When it detect WWW,
-	
-}
-
-void follow_line_til_junc(){
-    go_forward(126);
+void follow_forwards(int n){
+	int junc = 0;
+	int k = 70; // need to calibrate this!
+    go_forwards(126);
+    
     while(true){
         read_sensors();
         if(rsensor.left != B or rsensor.mid != W or rsensor.right != B){
             if (rsensor.left == W or rsensor.mid == W or rsensor.right == B){
-                //try to go left
+                //try to turn left
+                set_motors(120-k,120);
+                while(rsensor.left != B or rsensor.mid != W or rsensor.right != B){
+					read_sensors();
+				}
+				go_forwards(126);
+                
             } else if(rsensor.left == B or rsensor.mid == B or rsensor.right == W){
                 //try to go right
+                set_motors(120,120-k);
+                while(rsensor.left != B or rsensor.mid != W or rsensor.right != B){
+					read_sensors();
+				}
+				go_forwards(126);
             } else if (rsensor.left == W and rsensor.mid == W and rsensor.right == W) {
-                stop();
-                rstatus.junctions_passed++;
-                cout << "Detect a junction" << endl;
-                break;
-            } else {
+				junc++;
+				if(junc == n){
+					stop();
+					cout << "Detect a junction" << endl;
+					break;
+				}
+				while(rsensor.left == W and rsensor.mid == W and rsensor.right == W){
+					read_sensors();
+				}
+	
+			} else {
                 cout << "ERROR BBB" << endl;
                 stop();
                 break;
@@ -42,16 +69,58 @@ void follow_line_til_junc(){
         }
     }
 }
+
+void follow_backwards(int n){
+	int junc = 0;
+	int k = 70;
+    go_backwards(126);
+
+    while(true){
+        read_sensors();
+        
+        if(rsensor.left != B or rsensor.mid != W or rsensor.right != B){
+            if (rsensor.left == W or rsensor.mid == W or rsensor.right == B){
+                //try..
+                set_motors(120,120-k);
+                while(rsensor.left != B or rsensor.mid != W or rsensor.right != B){
+					read_sensors();
+				}
+				go_backwards(126);
+            } else if(rsensor.left == B or rsensor.mid == B or rsensor.right == W){
+                //try
+                set_motors(120-k,120);
+                while(rsensor.left != B or rsensor.mid != W or rsensor.right != B){
+					read_sensors();
+				}
+				go_backwards(126);
+            } else if (rsensor.left == W and rsensor.mid == W and rsensor.right == W) {
+				junc++;
+				while(rsensor.left == W and rsensor.mid == W and rsensor.right == W){
+					read_sensors();
+				}
+				if(junc == n){
+					stop();
+					cout << "Detect a junction" << endl;
+					break;
+				}
+			} else {
+                cout << "ERROR BBB" << endl;
+                stop();
+                break;
+            }
+        }
+    }
+}
+
+
+
 void follow_turn_right()
 {
-	
-	
+	turn_right();
 	
 } //move forwards/backwards a a little bit and turn_right, after the sensor detected the junction and the robot stopped.
 void follow_turn_left()
 {
-	
-	
-	
+	turn_left();
 	
 } //move forwards/backwards a a little bit and turn_left,, after the sensor detected the junction and the robot stopped.

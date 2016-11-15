@@ -11,8 +11,11 @@ using namespace std;
 robot_link  rlink;                            // datatype for the robot link
 stopwatch watch;
 robot_status rstatus;
+sensor_status rsensor;
 
 int main (){
+	
+	cout << "rstatus = " << rstatus.destination << endl; 
 
 	#ifdef __arm__
 		if (!rlink.initialise ()) {          // setup for local hardware

@@ -1,81 +1,120 @@
 #include "header.h"
 using namespace std;
-void go_assembling();
+
+void go_to_P_from_S()
+{
+	follow_forwards(2);     	                          //codes for go forwards a little bit until the actuator touches the sample.	
+}
+
+void go_assembling()
+{
+	follow_backwards(5);
+	follow_turn_left();
+	follow_forwards(4); //////the robot should stop at the line in front of D3
+	
+	switch(rstatus.destination){
+	
+	   case D1:
+		 follow_turn_right();
+		 follow_forwards(2);
+		 follow_turn_left();
+		 //codes for go forwards a little bit until the actuator touches the sample.
+		 break;
+	
+	   case D2:
+		 follow_turn_right();
+		 follow_forwards(1);
+		 follow_turn_left();
+		 //codes for go forwards a little bit until the actuator touches the sample.
+		 break;
+		
+	   case D3:
+		//codes for go forwards a little bit until the actuator touches the sample.
+		break;
+		
+	   default: cout<<"error when going to the destination"<<endl;
+             break;
+	}
+	rstatus.job_done ++;
+}
 
 
 void go_DF()
 {
-	ajust_initial_position();
-	rstatus.junctions_passed=0; // reset junction counter
-	while (rstatus.junctions_passed< 4)
-	{
-		follow_line_count_when_pass_junc();
-	}
 	
-	ajust_initial_position(); 
-	follow_line_til_junc();
+    follow_backwards(5);
 	follow_turn_left();
-	
-	rstatus.junctions_passed=0; // reset junction counter
-	while (rstatus.junctions_passed< 3)
-	{
-		follow_line_count_when_pass_junc();
-	}
+	follow_forwards(3);
 	follow_turn_left();
 	                    //codes for go forwards a little bit until the actuator touches the sample.
-	
-	};
+	rstatus.job_done ++;
+	}
 void go_DH()
 {
   
-	ajust_initial_position();
-	follow_line_til_junc();
+	follow_backwards(1);
 	follow_turn_left();
-	follow_line_til_junc();
+	follow_forwards(1);
 	follow_turn_right();
 	                   //codes for go forwards a little bit until the actuator touches the sample.
+	rstatus.job_done ++;
 }
-;
-void go_back_to_S()
+
+void go_back_to_P()
 {
 	switch(rstatus.destination){
 	
 	case D1:
-	 {
-		break;}
+		follow_backwards(1);
+		follow_turn_left();
+		follow_forwards(2);
+		follow_turn_left();
+		follow_forwards(4);
+		follow_turn_left();
+		follow_forwards(4);
+		//codes for go forwards a little bit until the actuator touches the sample.
+		break;
 	
 	case D2:
-	 {
-		break;}
+		follow_backwards(1);
+		follow_turn_left();
+		follow_forwards(1);
+		follow_turn_left();
+		follow_forwards(4);
+		follow_turn_left();
+		follow_forwards(4);
+		//codes for go forwards a little bit until the actuator touches the sample.
+		break;
 		
 	case D3:
-	 {
-		break;}
+		follow_backwards(5);
+		follow_turn_right();
+		follow_forwards(4);
+		//codes for go forwards a little bit until the actuator touches the sample.
+		break;
 		
 	case DF:
-	 {
-		 
-		break;}
+	   follow_backwards(1);
+	   follow_turn_left();
+	   follow_forwards(3);
+	   follow_turn_left();
+	   follow_forwards(4); 
+	   //codes for go forwards a little bit until the actuator touches the sample.
+	   break;
 		
 	case DH:
-	 {
-		break;}
+		follow_backwards(1);
+	    follow_turn_right();
+	    follow_forwards(1);
+	    follow_turn_left();
+	    //codes for go forwards a little bit until the actuator touches the sample.
+		break;
 		
-    default: cout<<"error"<<endl;
+    default: cout<<"error when going pack to P"<<endl;
              break;
 	}
 	
 	
-	
-	
-	
-	};
-void go_to_P_from_S()
-{
-	follow_line_count_when_pass_junc();
-	delay(2000);
-	follow_line_til_junc();
-	                          //codes for go forwards a little bit until the actuator touches the sample.
-	
-	};
-void go_back_to_start();
+	}
+
+void go_back_to_start(){};
