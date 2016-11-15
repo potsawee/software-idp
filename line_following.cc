@@ -26,7 +26,7 @@ void read_sensors(){
 		rsensor.left = B;
 	}
 }
-	
+// connect motor 1 to the left hand side.
 void follow_forwards(int n){
 	int junc = 0;
 	int k = 70; // need to calibrate this!

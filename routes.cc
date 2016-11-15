@@ -3,14 +3,15 @@ using namespace std;
 
 void go_to_P_from_S()
 {
-	follow_forwards(2);     	                          //codes for go forwards a little bit until the actuator touches the sample.	
+	follow_forwards(2);
+	//codes for go forwards a little bit until the actuator touches the sample.	
 }
 
 void go_assembling()
 {
 	follow_backwards(5);
 	follow_turn_left();
-	follow_forwards(4); //////the robot should stop at the line in front of D3
+	follow_forwards(4); //the robot should stop at the line in front of D3
 	
 	switch(rstatus.destination){
 	
@@ -62,6 +63,12 @@ void go_DH()
 
 void go_back_to_P()
 {
+	int complete_indicator;
+	if(rstatus.job_done==5)
+	complete_indicator=1;
+    else
+    complete_indicator=0;
+    
 	switch(rstatus.destination){
 	
 	case D1:
@@ -71,7 +78,7 @@ void go_back_to_P()
 		follow_turn_left();
 		follow_forwards(4);
 		follow_turn_left();
-		follow_forwards(4);
+		follow_forwards(4-complete_indicator);
 		//codes for go forwards a little bit until the actuator touches the sample.
 		break;
 	
@@ -82,14 +89,14 @@ void go_back_to_P()
 		follow_turn_left();
 		follow_forwards(4);
 		follow_turn_left();
-		follow_forwards(4);
+		follow_forwards(4-complete_indicator);
 		//codes for go forwards a little bit until the actuator touches the sample.
 		break;
 		
 	case D3:
 		follow_backwards(5);
 		follow_turn_right();
-		follow_forwards(4);
+		follow_forwards(4-complete_indicator);
 		//codes for go forwards a little bit until the actuator touches the sample.
 		break;
 		
@@ -98,7 +105,7 @@ void go_back_to_P()
 	   follow_turn_left();
 	   follow_forwards(3);
 	   follow_turn_left();
-	   follow_forwards(4); 
+	   follow_forwards(4-complete_indicator); 
 	   //codes for go forwards a little bit until the actuator touches the sample.
 	   break;
 		
@@ -106,8 +113,12 @@ void go_back_to_P()
 		follow_backwards(1);
 	    follow_turn_right();
 	    follow_forwards(1);
+	    if (complete_indicator==0)
 	    follow_turn_left();
 	    //codes for go forwards a little bit until the actuator touches the sample.
+	    else if (complete_indicator==1)
+	    follow_turn_right();
+	    follow_forwards(2);
 		break;
 		
     default: cout<<"error when going pack to P"<<endl;

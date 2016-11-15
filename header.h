@@ -9,18 +9,19 @@
 #include <delay.h>
 //// Functions in routes.cc ////
 
-
 void go_assembling();
 void go_DF();
 void go_DH();
 void go_back_to_S();
 void go_to_P();
 void go_back_to_start();
+void go_back_to_P();
+void go_to_P_from_S();
 
 //// Functions in mechanisms.cc ////
 void grab_object();   //to use actuator, front motors to grab an object, and thermistor , to detect whether it has a defect, to find the orientation, to measure if its temperature is more than 30 deg.
-void place_object1(); //to assemble a casting into an engine.
-void place_object2(); //to place a casting at either DF or DH.
+void assemble_casting(); //to assemble a casting into an engine.
+void place_casting(); //to place a casting at either DF or DH.
 
 
 //// Functions in line_following.cc ////
@@ -39,8 +40,6 @@ void turn_left();
 void turn_right();
 void stop();
 void set_motors(int v1, int v2);
-
-
 
 //// Enums & Classes ////
 enum casting_type {
@@ -69,7 +68,7 @@ class robot_status {
 		casting_type casting;
 		int job_done;
 		location destination;
-		//construtor
+		//constructor
 		robot_status(){
 			casting = NONE;
 			job_done = 0;
@@ -82,9 +81,14 @@ class sensor_status {
         line_following_sensor left;
         line_following_sensor mid;
         line_following_sensor right;
+        //constructor
+        sensor_status(){
+			left = B;
+			mid = W;
+			right = B;
+		}
     
 };
-
 
 ///// Global Variables /////
 extern robot_link rlink; 

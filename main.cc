@@ -15,8 +15,6 @@ sensor_status rsensor;
 
 int main (){
 	
-	cout << "rstatus = " << rstatus.destination << endl; 
-
 	#ifdef __arm__
 		if (!rlink.initialise ()) {          // setup for local hardware
 			cout << "Cannot initialise link..robot case" << endl;
@@ -36,15 +34,28 @@ int main (){
 		cout << "Test passed" << endl;                          // all OK, finish
 	}
 
-// call function move_s_to_p();
-// call function activate_actuator(); // this will grab an object this should return 1 if the object contains flashing; otherwise 0.
-// call function use_thermistor(); // this should return 1 if hot, 0
+	// call function move_s_to_p();
+	go_to_P_from_S();
 
-// with 1. number good object delivered 2. is Hot 3. have flashing or not ==> generate the case need to perform
-
-// switch(case) // execute route 1,2,3 etc
-
+	do{
+		grab_object();	 // now rstatus should have the updated values.
+		if(rstatus.casting == GOOD){
+			go_assembling();
+			assemble_casting();
+			go_back_to_P();
+		} else if(rstatus.casting == HOT){
+			go_DH();
+			place_casting();
+			go_back_to_P();
+		} else {
+			go_DF();
+			place_casting();
+			go_back_to_P();
+		}
+	}while(rstatus.job_done < 5);
+	
 // now it arrives at the destination, call place_object()
+	
 // with information about the case, execute route_back 1,2,3 etc;
 // if not done goes to the first command i.e. move_s_to_p
 
