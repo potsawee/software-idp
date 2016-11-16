@@ -7,12 +7,11 @@ run_cmd=./main
 
 [files]
 current_page=4
-FILE_NAME_0=1391;C++;0;EUTF-8;1;1;0;routes.cc;0;4
+FILE_NAME_0=0;C++;0;EUTF-8;1;1;0;routes.cc;0;4
 FILE_NAME_1=0;C++;0;EUTF-8;1;1;0;movements.cc;0;4
-FILE_NAME_2=220;C++;0;EUTF-8;1;1;0;%2Fhomes%2Fpm574%2Fidp_shared%2FCommon%2Fsoftware-idp%2Fmechanisms.cc;0;4
-FILE_NAME_3=1319;C++;0;EUTF-8;1;1;0;%2Fhomes%2Fpm574%2Fidp_shared%2FCommon%2Fsoftware-idp%2Fmain.cc;0;4
-FILE_NAME_4=3115;C++;0;EUTF-8;1;1;0;%2Fhomes%2Fpm574%2Fidp_shared%2FCommon%2Fsoftware-idp%2Fline_following.cc;0;4
-FILE_NAME_5=337;C++;0;EUTF-8;1;1;0;%2Fhomes%2Fpm574%2Fidp_shared%2FCommon%2Fsoftware-idp%2Fheader.h;0;4
+FILE_NAME_2=0;C++;0;EUTF-8;1;1;0;mechanisms.cc;0;4
+FILE_NAME_3=0;C++;0;EUTF-8;1;1;0;main.cc;0;4
+FILE_NAME_4=3235;C++;0;EUTF-8;1;1;0;line_following.cc;0;4
 
 [indentation]
 indent_width=4
