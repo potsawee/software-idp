@@ -10,63 +10,54 @@ void ajust_initial_position(){
 
 void read_sensors(){
 	int s = rlink.request(READ_PORT_5);
-	if(s bitand 0x01){
-		rsensor.right = W;
-	} else {
-		rsensor.right = B;
-	}
-	if(s bitand 0x02){
-		rsensor.mid = W;
-	} else {
-		rsensor.mid = B;
-	}
-	if(s bitand 0x04){
-		rsensor.left = W;
-	}else {
-		rsensor.left = B;
-	}
+	rsensor = s bitand 0b111;
 }
 // connect motor 1 to the left hand side.
 void follow_forwards(int n){
 	int junc = 0;
 	int k = 70; // need to calibrate this!
     go_forwards(126);
-    
-    while(true){
+    bool moving = true;
+    while(moving){
         read_sensors();
-        if(rsensor.left != B or rsensor.mid != W or rsensor.right != B){
-            if (rsensor.left == W or rsensor.mid == W or rsensor.right == B){
-                //try to turn left
-                set_motors(120-k,120);
-                while(rsensor.left != B or rsensor.mid != W or rsensor.right != B){
-					read_sensors();
-				}
-				go_forwards(126);
-                
-            } else if(rsensor.left == B or rsensor.mid == B or rsensor.right == W){
-                //try to go right
-                set_motors(120,120-k);
-                while(rsensor.left != B or rsensor.mid != W or rsensor.right != B){
-					read_sensors();
-				}
-				go_forwards(126);
-            } else if (rsensor.left == W and rsensor.mid == W and rsensor.right == W) {
-				junc++;
-				if(junc == n){
-					stop();
-					cout << "Detect a junction" << endl;
+        if(rsensor != 0b010){
+			switch(rsensor){
+				case 0b110:
+					//try to turn left
+					set_motors(126-k,126);
+					while(rsensor == 0b110){
+						read_sensors();
+					}
+					go_forwards(126);
 					break;
-				}
-				while(rsensor.left == W and rsensor.mid == W and rsensor.right == W){
-					read_sensors();
-				}
-	
-			} else {
-                cout << "ERROR BBB" << endl;
-                stop();
-                break;
-            }
-        }
+				case 0b011:
+					//try to go right
+					set_motors(126,126-k);
+					while(rsensor == 0b011){
+						read_sensors();
+					}
+					go_forwards(126);
+					break;
+				case 0b111:
+					//see a junction
+					junc++;
+					if(junc == n){
+						stop();
+						cout << "Detect a junction" << endl;
+						moving = false;
+						break;
+					}
+					while(rsensor == 0b111){
+						read_sensors();
+					}
+					break;
+				default:
+					cout << "Sensors detect something unexpected!" << endl;
+					stop();
+					moving = false;
+				
+			}//ending of switch
+		}// ending of if not 0b010
     }
 }
 
@@ -75,44 +66,48 @@ void follow_backwards(int n){
 	int k = 70;
     go_backwards(126);
 
-    while(true){
+	bool moving = true;
+    while(moving){
         read_sensors();
-        
-        if(rsensor.left != B or rsensor.mid != W or rsensor.right != B){
-            if (rsensor.left == W or rsensor.mid == W or rsensor.right == B){
-                //try..
-                set_motors(120,120-k);
-                while(rsensor.left != B or rsensor.mid != W or rsensor.right != B){
-					read_sensors();
-				}
-				go_backwards(126);
-            } else if(rsensor.left == B or rsensor.mid == B or rsensor.right == W){
-                //try
-                set_motors(120-k,120);
-                while(rsensor.left != B or rsensor.mid != W or rsensor.right != B){
-					read_sensors();
-				}
-				go_backwards(126);
-            } else if (rsensor.left == W and rsensor.mid == W and rsensor.right == W) {
-				junc++;
-				while(rsensor.left == W and rsensor.mid == W and rsensor.right == W){
-					read_sensors();
-				}
-				if(junc == n){
-					stop();
-					cout << "Detect a junction" << endl;
+        if(rsensor != 0b010){
+			switch(rsensor){
+				case 0b110:
+					//try to turn left
+					set_motors_back(126,126-k);
+					while(rsensor == 0b110){
+						read_sensors();
+					}
+					go_backwards(126);
 					break;
-				}
-			} else {
-                cout << "ERROR BBB" << endl;
-                stop();
-                break;
-            }
-        }
-    }
+				case 0b011:
+					//try to go right
+					set_motors_back(126-k,126);
+					while(rsensor == 0b011){
+						read_sensors();
+					}
+					go_backwards(126);
+					break;
+				case 0b111:
+					//see a junction
+					junc++;
+					while(rsensor.left == W and rsensor.mid == W and rsensor.right == W){
+						read_sensors();
+					}
+					if(junc == n){
+						stop();
+						cout << "Detect a junction" << endl;
+						moving = false;
+					}
+					break;
+				default:
+					cout << "Sensors detect something unexpected!" << endl;
+					stop();
+					moving = false;
+				
+			}//ending of switch
+		}// ending of if not 0b010
+	}
 }
-
-
 
 void follow_turn_right()
 {

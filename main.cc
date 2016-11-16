@@ -60,8 +60,6 @@ int main (){
 // if not done goes to the first command i.e. move_s_to_p
 
   
-    
-
 	return 0;  
 }  
 

@@ -7,6 +7,8 @@
 #include <robot_instr.h>
 #include <robot_link.h>
 #include <delay.h>
+#include <string>
+#include <fstream>
 //// Functions in routes.cc ////
 
 void go_assembling();
@@ -41,6 +43,9 @@ void turn_right();
 void stop();
 void set_motors(int v1, int v2);
 
+//// readfile.cc ////
+
+
 //// Enums & Classes ////
 enum casting_type {
 	NONE = 0,
@@ -58,11 +63,6 @@ enum location {
 	P
 };
 
-enum line_following_sensor {
-    B = 0, // B means black
-    W      // W means white
-};
-
 class robot_status {
 	public:
 		casting_type casting;
@@ -71,29 +71,16 @@ class robot_status {
 		//constructor
 		robot_status(){
 			casting = NONE;
-			job_done = 0;
+			job_done; // to be initialise in the main.cc
 			destination = P;
 		}
-};
-
-class sensor_status {
-    public:
-        line_following_sensor left;
-        line_following_sensor mid;
-        line_following_sensor right;
-        //constructor
-        sensor_status(){
-			left = B;
-			mid = W;
-			right = B;
-		}
-    
 };
 
 ///// Global Variables /////
 extern robot_link rlink; 
 extern stopwatch watch;
 extern robot_status rstatus;
-extern sensor_status rsensor;
+extern int rsensor; 
+//binary representation e.g. 0b111 // 1 means White // 0 means Black // Left is the highest bit.
 
 #endif
