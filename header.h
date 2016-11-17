@@ -10,17 +10,17 @@
 #include <string>
 #include <fstream>
 //// Functions in routes.cc ////
-
+void find_destination();
+void go_to_P_from_S();
 void go_assembling();
 void go_DF();
 void go_DH();
-void go_back_to_S();
-void go_to_P();
-void go_back_to_start();
 void go_back_to_P();
-void go_to_P_from_S();
+
 
 //// Functions in mechanisms.cc ////
+void read_thermistor();
+void defect_testing();
 void grab_object();   //to use actuator, front motors to grab an object, and thermistor , to detect whether it has a defect, to find the orientation, to measure if its temperature is more than 30 deg.
 void assemble_casting(); //to assemble a casting into an engine.
 void place_casting(); //to place a casting at either DF or DH.
@@ -33,6 +33,8 @@ void follow_forwards(int n); // stop at the n-th junction (1 means the first jun
 void follow_backwards(int n); // stop at the n-th junction
 void follow_turn_right();
 void follow_turn_left();
+void recovery1();
+void recovery2();
 
 //// Functions in movements.cc ////
 
@@ -42,8 +44,13 @@ void turn_left();
 void turn_right();
 void stop();
 void set_motors(int v1, int v2);
+void set_motors_back(int v1, int v2);
+void spin_left();
+void spin_right();
 
-//// readfile.cc ////
+//// rwfile.cc //// read/write
+void read_job_done();
+void write_job_done();
 
 
 //// Enums & Classes ////
@@ -67,12 +74,20 @@ class robot_status {
 	public:
 		casting_type casting;
 		int job_done;
+        int good_casting_done;
 		location destination;
+		int last_white;
+		int defect_indicator; //it is 1 when the casting has defect.
+        int tsensor;       // themistor, it is 1 when the casting is too hot.
 		//constructor
 		robot_status(){
+                       
 			casting = NONE;
-			job_done; // to be initialise in the main.cc
+			// to job_done be initialise in the main.cc
 			destination = P;
+			last_white = 0; // 1 means LEFT = last white // 2 means RIGHT
+                        tsensor=0;
+                        defect_indicator=0;
 		}
 };
 
@@ -80,7 +95,8 @@ class robot_status {
 extern robot_link rlink; 
 extern stopwatch watch;
 extern robot_status rstatus;
-extern int rsensor; 
-//binary representation e.g. 0b111 // 1 means White // 0 means Black // Left is the highest bit.
+extern int lfsensor; //binary representation e.g. 0b111 // 1 means White // 0 means Black // Left is the highest bit.
+
+
 
 #endif

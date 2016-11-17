@@ -1,6 +1,39 @@
 #include "header.h"
 using namespace std;
 
+void find_destination()
+{
+	if ( (rstatus.tsensor==1)&&(rstatus.defect_indicator ==0) )
+	{rstatus.destination=DH;	
+    }
+	else if ( (rstatus.tsensor==0)&&(rstatus.defect_indicator ==1) )
+	{rstatus.destination=DF;
+	}	
+	else if ( (rstatus.tsensor==0)&&(rstatus.defect_indicator ==0) )
+	{
+		switch(rstatus.good_casting_done){
+	    case 0:
+		rstatus.destination=D1;		
+		break;
+		case 1:
+		rstatus.destination=D2;		
+		break;
+		case 2:
+		rstatus.destination=D3;		
+		break;
+		case 3:
+		cout<<"all three castings have been delivered already!"<<endl;
+		break;
+		default: cout<<"error with counting number of good casting done"<<endl;
+        break;
+	    }//end of switch
+    }
+    else
+    cout<<"error about counting number of good castings"<<endl;
+}
+
+
+
 void go_to_P_from_S()
 {
 	follow_forwards(2);
@@ -36,6 +69,7 @@ void go_assembling()
 	   default: cout<<"error when going to the destination"<<endl;
              break;
 	}
+	rstatus.good_casting_done ++;
 	rstatus.job_done ++;
 }
 
@@ -123,9 +157,8 @@ void go_back_to_P()
 		
     default: cout<<"error when going pack to P"<<endl;
              break;
-	}
-	
-	
-	}
+	} //end of switch
+		
+}//end of the function
 
-void go_back_to_start(){};
+

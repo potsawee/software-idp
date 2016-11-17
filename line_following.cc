@@ -10,7 +10,7 @@ void ajust_initial_position(){
 
 void read_sensors(){
 	int s = rlink.request(READ_PORT_5);
-	rsensor = s bitand 0b111;
+	lfsensor = s bitand 0b111; 
 }
 // connect motor 1 to the left hand side.
 void follow_forwards(int n){
@@ -20,12 +20,12 @@ void follow_forwards(int n){
     bool moving = true;
     while(moving){
         read_sensors();
-        if(rsensor != 0b010){
-			switch(rsensor){
+        if(lfsensor != 0b010){
+			switch(lfsensor){
 				case 0b110:
 					//try to turn left
 					set_motors(126-k,126);
-					while(rsensor == 0b110){
+					while(lfsensor == 0b110){
 						read_sensors();
 					}
 					go_forwards(126);
@@ -33,7 +33,7 @@ void follow_forwards(int n){
 				case 0b011:
 					//try to go right
 					set_motors(126,126-k);
-					while(rsensor == 0b011){
+					while(lfsensor == 0b011){
 						read_sensors();
 					}
 					go_forwards(126);
@@ -47,10 +47,19 @@ void follow_forwards(int n){
 						moving = false;
 						break;
 					}
-					while(rsensor == 0b111){
+					while(lfsensor == 0b111){
 						read_sensors();
 					}
 					break;
+				//recovery when the mid sensor reads BLACK
+				case 0b100:
+					rstatus.last_white = 1;
+					break;
+				case 0b001:
+					rstatus.last_white = 2;
+				case 0b000:
+					cout << "need to recover... now BBB" << endl;
+					recovery1();
 				default:
 					cout << "Sensors detect something unexpected!" << endl;
 					stop();
@@ -69,12 +78,12 @@ void follow_backwards(int n){
 	bool moving = true;
     while(moving){
         read_sensors();
-        if(rsensor != 0b010){
-			switch(rsensor){
+        if(lfsensor != 0b010){
+			switch(lfsensor){
 				case 0b110:
 					//try to turn left
 					set_motors_back(126,126-k);
-					while(rsensor == 0b110){
+					while(lfsensor == 0b110){
 						read_sensors();
 					}
 					go_backwards(126);
@@ -82,7 +91,7 @@ void follow_backwards(int n){
 				case 0b011:
 					//try to go right
 					set_motors_back(126-k,126);
-					while(rsensor == 0b011){
+					while(lfsensor == 0b011){
 						read_sensors();
 					}
 					go_backwards(126);
@@ -90,8 +99,8 @@ void follow_backwards(int n){
 				case 0b111:
 					//see a junction
 					junc++;
-					while(rsensor.left == W and rsensor.mid == W and rsensor.right == W){
-						read_sensors();
+					while(lfsensor == 0b111){
+						read_sensors(); 
 					}
 					if(junc == n){
 						stop();
@@ -99,6 +108,16 @@ void follow_backwards(int n){
 						moving = false;
 					}
 					break;
+					
+				//recovery when the mid sensor reads BLACK
+				case 0b100:
+					rstatus.last_white = 1;
+					break;
+				case 0b001:
+					rstatus.last_white = 2;
+				case 0b000:
+					cout << "need to recover... now BBB" << endl;
+					recovery2();
 				default:
 					cout << "Sensors detect something unexpected!" << endl;
 					stop();
@@ -119,3 +138,20 @@ void follow_turn_left()
 	turn_left();
 	
 } //move forwards/backwards a a little bit and turn_left,, after the sensor detected the junction and the robot stopped.
+
+void recovery1(){
+	go_backwards(126);
+	while(lfsensor == 0b000);
+	stop();
+	if(rstatus.last_white == 1){
+		spin_left();
+	}else {
+		spin_right();
+	}
+	while((lfsensor bitand 0b010)!= 1 );
+	delay(5);//calibrate this!!
+	stop();
+}
+void recovery2(){
+
+}

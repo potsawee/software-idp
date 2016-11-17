@@ -11,7 +11,8 @@ using namespace std;
 robot_link  rlink;                            // datatype for the robot link
 stopwatch watch;
 robot_status rstatus;
-sensor_status rsensor;
+int lfsensor;
+int tsensor;
 
 int main (){
 	
@@ -34,7 +35,7 @@ int main (){
 		cout << "Test passed" << endl;                          // all OK, finish
 	}
 
-	// call function move_s_to_p();
+	// go to the pick-up place
 	go_to_P_from_S();
 
 	do{
