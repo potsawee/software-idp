@@ -130,11 +130,15 @@ void follow_backwards(int n){
 
 void follow_turn_right()
 {
+	go_forwards(126);
+	delay(120);
 	turn_right();
 	
 } //move forwards/backwards a a little bit and turn_right, after the sensor detected the junction and the robot stopped.
 void follow_turn_left()
 {
+	go_forwards(126);
+	delay(120);
 	turn_left();
 	
 } //move forwards/backwards a a little bit and turn_left,, after the sensor detected the junction and the robot stopped.

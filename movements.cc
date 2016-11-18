@@ -29,14 +29,14 @@ void turn_left()
 {   rlink.command (RAMP_TIME,0);
 	rlink.command(MOTOR_1_GO, 50);
 	rlink.command(MOTOR_2_GO, 60);
-	delay(3800);
+	delay(4000);
 }
 
 void turn_right()
 {   rlink.command (RAMP_TIME,0);
 	rlink.command(MOTOR_1_GO, 30 + 0x80);
 	rlink.command(MOTOR_2_GO, 100 + 0x80);
-	delay(3800);
+	delay(4000);
 }
 
 void spin_left(){ // will be used in recovery but NEED to be calibrate
