@@ -5,13 +5,16 @@
 #include <delay.h>
 #include <iomanip>
 #include "header.h"
+#include <string>
 using namespace std;
 
 #define ROBOT_NUM  16                         // The id number (see below)
 robot_link  rlink;                            // datatype for the robot link
 stopwatch watch;
 robot_status rstatus;
-sensor_status rsensor;
+int lfsensor;
+void ConvertToBinary(int n);
+
 
 int main (){
 	
@@ -34,16 +37,36 @@ int main (){
 		cout << "Test passed" << endl;                          // all OK, finish
 	}
 	cout << "HELLLLLOOOO" << endl;
-    //go_forwards(126);
-    //delay(5000);
-    go_backwards(126);
-    delay(8000);
-    turn_left();
     
-  
+    follow_forwards(4);
+       follow_turn_right();
+    follow_forwards(2);
+    follow_turn_right();
+    follow_forwards(2);
+    follow_turn_right();
+       follow_forwards(2);
+
+
+    follow_forwards(2);
+
+    
+    
+    /*while (1)
+    {read_sensors();
+     ConvertToBinary(lfsensor);
+     cout<<endl;	
+	delay(500);
+     }*/
     
 
 	return 0;  
 }  
 
+void ConvertToBinary(int n) /*Alex says: Good to use unsigned int if u can*/
+{
+    if (n / 2 != 0) {
+        ConvertToBinary(n / 2);
+    }
+    printf("%d", n % 2);
+}
 
