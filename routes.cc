@@ -33,42 +33,21 @@ void find_destination()
 }
 
 
-
 void go_to_P_from_S()
 {
 	follow_forwards(2);
-	//codes for go forwards a little bit until the actuator touches the sample.	
+	//the robot should just in front of the block
 }
 
 void go_assembling()
 {
-	follow_backwards(5);
+	ajust_initial_position();
 	follow_turn_left();
-	follow_forwards(4); //the robot should stop at the line in front of D3
-	
-	switch(rstatus.destination){
-	
-	   case D1:
-		 follow_turn_right();
-		 follow_forwards(2);
-		 follow_turn_left();
-		 //codes for go forwards a little bit until the actuator touches the sample.
-		 break;
-	
-	   case D2:
-		 follow_turn_right();
-		 follow_forwards(1);
-		 follow_turn_left();
-		 //codes for go forwards a little bit until the actuator touches the sample.
-		 break;
-		
-	   case D3:
-		//codes for go forwards a little bit until the actuator touches the sample.
-		break;
-		
-	   default: cout<<"error when going to the destination"<<endl;
-             break;
-	}
+	follow_forwards(1);
+	follow_til_corner();
+	follow_curve(good_casting_done+1);
+	follow_turn_right();
+	//the robot should just in front of the block
 	rstatus.good_casting_done ++;
 	rstatus.job_done ++;
 }
@@ -76,22 +55,25 @@ void go_assembling()
 
 void go_DF()
 {
-	
-    follow_backwards(5);
+	ajust_initial_position();
+    follow_turn_left();
+	follow_forwards(1);
+	follow_til_corner();
 	follow_turn_left();
-	follow_forwards(3);
+	follow_forwards(2);
+	follow_turn_right();
+	follow_forwards(1);
 	follow_turn_left();
-	                    //codes for go forwards a little bit until the actuator touches the sample.
+	//the robot should just in front of the block              
 	rstatus.job_done ++;
 	}
 void go_DH()
 {
-  
-	follow_backwards(1);
-	follow_turn_left();
+	ajust_initial_position();
+    follow_turn_left();
 	follow_forwards(1);
 	follow_turn_right();
-	                   //codes for go forwards a little bit until the actuator touches the sample.
+ 	//the robot should just in front of the block              
 	rstatus.job_done ++;
 }
 
@@ -103,62 +85,32 @@ void go_back_to_P()
     else
     complete_indicator=0;
     
-	switch(rstatus.destination){
-	
-	case D1:
-		follow_backwards(1);
-		follow_turn_left();
-		follow_forwards(2);
-		follow_turn_left();
-		follow_forwards(4);
-		follow_turn_left();
-		follow_forwards(4-complete_indicator);
-		//codes for go forwards a little bit until the actuator touches the sample.
-		break;
-	
-	case D2:
-		follow_backwards(1);
-		follow_turn_left();
-		follow_forwards(1);
-		follow_turn_left();
-		follow_forwards(4);
-		follow_turn_left();
-		follow_forwards(4-complete_indicator);
-		//codes for go forwards a little bit until the actuator touches the sample.
-		break;
-		
-	case D3:
-		follow_backwards(5);
-		follow_turn_right();
-		follow_forwards(4-complete_indicator);
-		//codes for go forwards a little bit until the actuator touches the sample.
-		break;
-		
-	case DF:
-	   follow_backwards(1);
-	   follow_turn_left();
-	   follow_forwards(3);
-	   follow_turn_left();
-	   follow_forwards(4-complete_indicator); 
-	   //codes for go forwards a little bit until the actuator touches the sample.
-	   break;
-		
-	case DH:
-		follow_backwards(1);
-	    follow_turn_right();
-	    follow_forwards(1);
-	    if (complete_indicator==0)
-	    follow_turn_left();
-	    //codes for go forwards a little bit until the actuator touches the sample.
-	    else if (complete_indicator==1)
-	    follow_turn_right();
-	    follow_forwards(2);
-		break;
-		
-    default: cout<<"error when going pack to P"<<endl;
-             break;
-	} //end of switch
-		
+    if(0<rstatus.destination<4)
+    {
+		ajust_initial_position();
+        follow_turn_right();
+        while (rstatus.destination>0)
+        {
+        follow_forwards(rstatus.destination-1);
+		};	
+		follow_curve_back();
+	};
+	else if (rstatus.destination==4) //DF
+	{
+		ajust_initial_position();
+        follow_turn_right();
+        follow_forwards(1);
+        follow_turn_right();
+        follow_forwards(2);
+        follow_curve_back();	
+    };
+    else if (rstatus.destination==5) //DH
+	{
+		ajust_initial_position();
+        follow_turn_right();
+        follow_forwards(1);
+    };
 }//end of the function
 
+//function for going back to S !!!!!!!!!!!!!!
 

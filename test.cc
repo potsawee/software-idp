@@ -6,8 +6,8 @@
 #include <iomanip>
 #include "header.h"
 #include <string>
-using namespace std;
-
+using namespace std;  
+ //LED off means ONE!!!
 #define ROBOT_NUM  16                         // The id number (see below)
 robot_link  rlink;                            // datatype for the robot link
 stopwatch watch;
@@ -37,9 +37,39 @@ int main (){
 		cout << "Test passed" << endl;                          // all OK, finish
 	}
 	cout << "HELLLLLOOOO" << endl;
+	
+	watch.start();
+
+	
+	/*follow_forwards(1);
+	go_backwards(126);
+	delay(1000);
+    rotate180();
+    follow_forwards(1);*/
+	
+	//go_forwards(126);
+	/*while(true){
+	cout << "t = " << watch.read()-t1 << endl;
+	}*/
+	
+	/*
+	follow_forwards(1);
+	follow_corner();
+	go_forwards(126);
+  	delay(3000);
+  	read_sensors();
+  	while(lfsensor == 0b000){
+		read_sensors();
+	}
+ 
+	follow_forwards(3);
+	follow_turn_left();
+	follow_forwards(1);
+	follow_turn_right();
+    */
     
-    follow_forwards(4);
-       follow_turn_right();
+    
+       /*follow_turn_right();
     follow_forwards(2);
     follow_turn_right();
     follow_forwards(2);
@@ -47,7 +77,7 @@ int main (){
        follow_forwards(2);
 
 
-    follow_forwards(2);
+    follow_forwards(2);*/
 
     
     
@@ -57,6 +87,17 @@ int main (){
      cout<<endl;	
 	delay(500);
      }*/
+    
+    
+    follow_forwards(1);
+    follow_turn_left();
+    follow_forwards(1);
+    follow_turn_left();
+    follow_forwards(1);
+    follow_turn_left();
+    follow_forwards(1);
+    follow_turn_left();
+    
     
 
 	return 0;  

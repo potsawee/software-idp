@@ -2,9 +2,10 @@
 using namespace std;
 
 
-void ajust_initial_position(){
-	go_backwards(100); //*adjust initial position 
-	delay(500);
+void adjust_initial_position(){
+	go_backwards(126); //*adjust initial position 
+	delay(1500);
+	follow_forwards(1);
 	stop();
 }
 
@@ -43,7 +44,7 @@ void follow_forwards(int n){
 					junc++;
 					if(junc == n){
 						stop();
-						cout << "Detect a junction" << endl;
+						cout << "Detect a junction1111" << endl;
 						moving = false;
 						break;
 					}
@@ -72,31 +73,39 @@ void follow_forwards(int n){
 
 void follow_backwards(int n){
 	int junc = 0;
-	int k = 70;
+	int k = 50;
+	int fspeed = 100;
     go_backwards(126);
 
 	bool moving = true;
     while(moving){
         read_sensors();
+        cout << "lfsensor " << lfsensor << endl;
+        
         if(lfsensor != 0b010){
 			switch(lfsensor){
-				case 0b110:
-					//try to turn left
-					set_motors_back(126,126-k);
-					while(lfsensor == 0b110){
-						read_sensors();
-					}
-					go_backwards(126);
-					break;
 				case 0b011:
-					//try to go right
-					set_motors_back(126-k,126);
+					cout << "turn leftttt!!!" << endl;
+					//try to turn left
+					//rlink.command(MOTOR_1_GO, (50/2)+0x80);
+					//rlink.command(MOTOR_2_GO, 80);
+					set_motors_back(fspeed-k,fspeed);
 					while(lfsensor == 0b011){
 						read_sensors();
 					}
 					go_backwards(126);
 					break;
+				case 0b110:
+					cout << "turn righttttt!!!" << endl;
+					//try to go right
+					set_motors_back(fspeed,fspeed-k);
+					while(lfsensor == 0b110){
+						read_sensors();
+					}
+					go_backwards(126);
+					break;
 				case 0b111:
+					cout << "WWW!!!" << endl;
 					//see a junction
 					junc++;
 					while(lfsensor == 0b111){
@@ -104,7 +113,7 @@ void follow_backwards(int n){
 					}
 					if(junc == n){
 						stop();
-						cout << "Detect a junction" << endl;
+						cout << "Detect a junction22222222" << endl;
 						moving = false;
 					}
 					break;
@@ -158,4 +167,195 @@ void recovery1(){
 }
 void recovery2(){
 
+}
+
+void follow_til_corner(int T){
+	int k = 70; // need to calibrate this!
+	int t_start = watch.read();
+	int time = watch.read() - t_start;
+	//int T = (3850);// distance over speed; here calibrate with speed = 126
+    go_forwards(126);
+    while(lfsensor == 0b111){
+		read_sensors();
+	}
+    bool moving = true;
+    while(moving){
+        read_sensors();
+        time = watch.read() - t_start;
+        if(lfsensor != 0b010 and time < T){
+			switch(lfsensor){
+				case 0b110:
+					//try to turn left
+					set_motors(126-k,126);
+					while(lfsensor == 0b110){
+						read_sensors();
+					}
+					go_forwards(126);
+					break;
+				case 0b011:
+					//try to go right
+					set_motors(126,126-k);
+					while(lfsensor == 0b011){
+						read_sensors();
+					}
+					go_forwards(126);
+					break;
+				//recovery when the mid sensor reads BLACK
+				case 0b100:
+					rstatus.last_white = 1;
+					break;
+				case 0b001:
+					rstatus.last_white = 2;
+				case 0b000:
+					cout << "need to recover... now BBB" << endl;
+					recovery1();
+				default:
+					cout << "Sensors detect something unexpected!" << endl;
+					stop();
+					moving = false;
+				
+			}//ending of switch
+		}// ending of if not 0b010
+		else if(time > T){
+			cout << "T > 3850" << endl;
+			go_forwards(126);
+			while(true){
+				read_sensors();
+				if(lfsensor == 0b011){
+					moving = false;
+					cout << "detect a corner" << endl;
+					break;
+				}
+			};
+		}
+    }
+}
+
+void rotate180(bool clockwise){
+	if(!clockwise)
+		spin_left();
+	else
+		spin_right();
+	read_sensors();
+	while(lfsensor != 0b000){
+		read_sensors();
+	}
+	while(lfsensor != 0b010){
+		read_sensors();
+	}
+	stop();	
+}
+
+void follow_curve(int n){
+	go_forwards(126);
+	delay(3000);
+	read_sensors();
+	while(lfsensor == 0b000){
+		read_sensors();
+	}
+	follow_forwards(n);
+}
+void follow_curve_back(){
+	int k = 70; // need to calibrate this!
+    go_forwards(126);
+    bool moving = true;
+    while(moving){
+        read_sensors();
+        if(lfsensor != 0b010){
+			switch(lfsensor){
+				case 0b110:
+					//try to turn left
+					set_motors(126-k,126);
+					while(lfsensor == 0b110){
+						read_sensors();
+					}
+					go_forwards(126);
+					break;
+				case 0b011:
+					//try to go right
+					set_motors(126,126-k);
+					while(lfsensor == 0b011){
+						read_sensors();
+					}
+					go_forwards(126);
+					break;
+				case 0b000:
+					cout << "see blacl space BBB" << endl;
+					moving = false;
+					break;
+				default:
+					cout << "problem occurs follow curve back" << endl;
+					break;
+			}//ending of switch
+		}// ending of if not 0b010
+    }
+    
+    go_forwards(126);
+	read_sensors();
+	while(lfsensor == 0b000){
+		read_sensors();
+	}
+	follow_forwards(2);
+}
+
+void follow_til_corner2(int T){
+	int k = 70; // need to calibrate this!
+	int t_start = watch.read();
+	int time = watch.read() - t_start;
+	//int T = (6000);// distance over speed; here calibrate with speed = 126
+    go_forwards(126);
+    while(lfsensor == 0b111){
+		read_sensors();
+	}
+    bool moving = true;
+    while(moving){
+        read_sensors();
+        time = watch.read() - t_start;
+        if(lfsensor != 0b010 and time < T){
+			switch(lfsensor){
+				case 0b110:
+					//try to turn left
+					set_motors(126-k,126);
+					while(lfsensor == 0b110){
+						read_sensors();
+					}
+					go_forwards(126);
+					break;
+				case 0b011:
+					//try to go right
+					set_motors(126,126-k);
+					while(lfsensor == 0b011){
+						read_sensors();
+					}
+					go_forwards(126);
+					break;
+				//recovery when the mid sensor reads BLACK
+				case 0b100:
+					rstatus.last_white = 1;
+					break;
+				case 0b001:
+					rstatus.last_white = 2;
+				case 0b000:
+					cout << "need to recover... now BBB" << endl;
+					recovery1();
+				default:
+					cout << "Sensors detect something unexpected!" << endl;
+					stop();
+					moving = false;
+				
+			}//ending of switch
+		}// ending of if not 0b010
+		else if(time > T){
+			cout << "T > 3850" << endl;
+			go_forwards(126);
+			while(true){
+				read_sensors();
+				if(lfsensor == 0b110){
+					moving = false;
+					cout << "detect a corner type 2" << endl;
+					break;
+				}
+			};
+		}
+    }
 }

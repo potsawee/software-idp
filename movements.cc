@@ -26,28 +26,33 @@ void set_motors_back(int v1, int v2){
 }
 
 void turn_left()
-{   rlink.command (RAMP_TIME,0);
-	rlink.command(MOTOR_1_GO, 50);
+{   go_forwards(126);
+	delay(170);
+	rlink.command (RAMP_TIME,0);
+	rlink.command(MOTOR_1_GO, (100/2));
 	rlink.command(MOTOR_2_GO, 60);
-	delay(4000);
+	delay(3600);
 }
 
 void turn_right()
-{   rlink.command (RAMP_TIME,0);
-	rlink.command(MOTOR_1_GO, 30 + 0x80);
+{   go_forwards(126);
+	delay(170);
+	rlink.command (RAMP_TIME,0);
+	rlink.command(MOTOR_1_GO, (60/2) + 0x80);
 	rlink.command(MOTOR_2_GO, 100 + 0x80);
-	delay(4000);
+	delay(3600);
 }
 
 void spin_left(){ // will be used in recovery but NEED to be calibrate
 	rlink.command (RAMP_TIME,0);
-	rlink.command(MOTOR_1_GO, 50);
-	rlink.command(MOTOR_2_GO, 60);
+	rlink.command(MOTOR_1_GO, 40);
+	rlink.command(MOTOR_2_GO, 75);
 }
 void spin_right(){
 	rlink.command (RAMP_TIME,0);
-	rlink.command(MOTOR_1_GO, 30 + 0x80);
-	rlink.command(MOTOR_2_GO, 100 + 0x80);
+	rlink.command(MOTOR_1_GO, 40+0x80);
+	rlink.command(MOTOR_2_GO, 75+0x80);
+
 }
 
 

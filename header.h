@@ -31,10 +31,16 @@ void adjust_initial_position();
 void read_sensors();
 void follow_forwards(int n); // stop at the n-th junction (1 means the first junction)
 void follow_backwards(int n); // stop at the n-th junction
-void follow_turn_right();
+void follow_turn_right();// maybe just use turn_right instead of this function!
 void follow_turn_left();
+void follow_til_corner(int T);
+void follow_til_corner2(int T);
+void follow_curve(int n); //it will stop at the n-th junction after the curve
+void follow_curve_back(); //from the start of the curve to P
+void rotate180(bool clockwise);
 void recovery1();
 void recovery2();
+
 
 //// Functions in movements.cc ////
 
