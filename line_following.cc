@@ -58,9 +58,11 @@ void follow_forwards(int n){
 					break;
 				case 0b001:
 					rstatus.last_white = 2;
+					break;
 				case 0b000:
 					cout << "need to recover... now BBB" << endl;
 					recovery1();
+					break;
 				default:
 					cout << "Sensors detect something unexpected!" << endl;
 					stop();
@@ -152,23 +154,6 @@ void follow_turn_left()
 	
 } //move forwards/backwards a a little bit and turn_left,, after the sensor detected the junction and the robot stopped.
 
-void recovery1(){
-	go_backwards(126);
-	while(lfsensor == 0b000);
-	stop();
-	if(rstatus.last_white == 1){
-		spin_left();
-	}else {
-		spin_right();
-	}
-	while((lfsensor bitand 0b010)!= 1 );
-	delay(5);//calibrate this!!
-	stop();
-}
-void recovery2(){
-
-}
-
 void follow_til_corner(int T){
 	int k = 70; // need to calibrate this!
 	int t_start = watch.read();
@@ -206,9 +191,11 @@ void follow_til_corner(int T){
 					break;
 				case 0b001:
 					rstatus.last_white = 2;
+					break;
 				case 0b000:
 					cout << "need to recover... now BBB" << endl;
 					recovery1();
+					break;
 				default:
 					cout << "Sensors detect something unexpected!" << endl;
 					stop();
@@ -231,11 +218,13 @@ void follow_til_corner(int T){
     }
 }
 
-void rotate180(bool clockwise){
-	if(!clockwise)
+void rotate180(rotation R){
+	if(R == ACW)
 		spin_left();
-	else
+	else if(R == CW)
 		spin_right();
+	else
+		cout << "rotation180 accpets either ACW for anti-clockwise or CW for clockwise" << endl;
 	read_sensors();
 	while(lfsensor != 0b000){
 		read_sensors();
@@ -335,9 +324,11 @@ void follow_til_corner2(int T){
 					break;
 				case 0b001:
 					rstatus.last_white = 2;
+					break;
 				case 0b000:
 					cout << "need to recover... now BBB" << endl;
 					recovery1();
+					break;
 				default:
 					cout << "Sensors detect something unexpected!" << endl;
 					stop();
@@ -358,4 +349,27 @@ void follow_til_corner2(int T){
 			};
 		}
     }
+}
+
+void recovery1(){
+	go_backwards(126);
+	while(lfsensor == 0b000){
+		read_sensors();
+	}
+	//stop();
+	if(rstatus.last_white == 1){
+		spin_left();
+		while(lfsensor != 0b010){
+			read_sensors();
+		}
+	}else {
+		spin_right();
+		while(lfsensor != 0b010){
+			read_sensors();
+		}
+	}
+	go_forwards(126);
+}
+void recovery2(){
+
 }
