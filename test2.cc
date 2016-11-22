@@ -39,15 +39,9 @@ int main (){
 	cout << "This is test 2." << endl;
 	
 	watch.start();
-	
 	while(1){
-		follow_forwards(3);
-		turn_left();
-		follow_forwards(2);
-		turn_left();
-		follow_til_corner(3000);
-		follow_curve(3);
-		
+		read_thermistor();
+		delay(500);
 	}
 	return 0;  
 }  

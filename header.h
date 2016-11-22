@@ -78,7 +78,7 @@ enum location {
 enum rotation {
 	CW = 0,
 	ACW
-}
+};
 
 class robot_status {
 	public:

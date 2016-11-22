@@ -1,8 +1,10 @@
 #include "header.h"
+using namespace std;
 
-void read_thermistor(){
+void read_thermistor(){// tsensor = 1 means temp > 30 deg
 	int s = rlink.request(READ_PORT_5);
-	rstatus.tsensor = s bitand 0b1000; 
+	rstatus.tsensor = (s bitand 0b10000)/16;
+	cout << rstatus.tsensor << endl; 
 }
 
 void defect_testing(){
