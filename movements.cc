@@ -27,11 +27,11 @@ void set_motors_back(int v1, int v2){
 
 void turn_left()
 {   go_forwards(126);
-	delay(170);
+	delay(220);
 	rlink.command (RAMP_TIME,0);
 	rlink.command(MOTOR_1_GO, (100/2));
 	rlink.command(MOTOR_2_GO, 60);
-	delay(3600);
+	delay(4000);//found this issue on Tues week 3
 }
 
 void turn_right()

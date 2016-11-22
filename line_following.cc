@@ -3,10 +3,24 @@ using namespace std;
 
 
 void adjust_initial_position(){
-	go_backwards(126); //*adjust initial position 
-	delay(1500);
-	follow_forwards(1);
+	read_sensors();
+	cout << "start adjusting" << endl;
+	go_backwards(126);
+	cout << "back adjusting" << endl;
+	while(lfsensor != 0b111){
+		cout << "read1" << endl;
+		//cout << "motor 1 speed = " << rlink.request(MOTOR_1) << endl;
+		//cout << "motor 2 speed = " << rlink.request(MOTOR_2) << endl;
+		read_sensors();
+		//go_backwards(126);
+	}
+	while(lfsensor == 0b111){
+		cout << "read2" << endl;
+		read_sensors();
+	}
+	cout << "stop adjusting" << endl;
 	stop();
+	
 }
 
 void read_sensors(){
@@ -139,7 +153,7 @@ void follow_backwards(int n){
 	}
 }
 
-void follow_turn_right()
+/*void follow_turn_right()
 {
 	go_forwards(126);
 	delay(120);
@@ -152,7 +166,7 @@ void follow_turn_left()
 	delay(120);
 	turn_left();
 	
-} //move forwards/backwards a a little bit and turn_left,, after the sensor detected the junction and the robot stopped.
+} //move forwards/backwards a a little bit and turn_left,, after the sensor detected the junction and the robot stopped.*/
 
 void follow_til_corner(int T){
 	int k = 70; // need to calibrate this!
@@ -204,11 +218,11 @@ void follow_til_corner(int T){
 			}//ending of switch
 		}// ending of if not 0b010
 		else if(time > T){
-			cout << "T > 3850" << endl;
+			cout << "time exceeded corner type 1" << endl;
 			go_forwards(126);
 			while(true){
 				read_sensors();
-				if(lfsensor == 0b011){
+				if(lfsensor != 0b010){
 					moving = false;
 					cout << "detect a corner" << endl;
 					break;
@@ -236,7 +250,9 @@ void rotate180(rotation R){
 }
 
 void follow_curve(int n){
-	go_forwards(126);
+	rlink.command (RAMP_TIME,0);
+	rlink.command(MOTOR_1_GO, 126/2); 
+	rlink.command(MOTOR_2_GO, 120 + 0x80);
 	delay(3000);
 	read_sensors();
 	while(lfsensor == 0b000){
@@ -337,11 +353,11 @@ void follow_til_corner2(int T){
 			}//ending of switch
 		}// ending of if not 0b010
 		else if(time > T){
-			cout << "T > 3850" << endl;
+			cout << "time exceeded corner type 2" << endl;
 			go_forwards(126);
 			while(true){
 				read_sensors();
-				if(lfsensor == 0b110){
+				if(lfsensor != 0b010){
 					moving = false;
 					cout << "detect a corner type 2" << endl;
 					break;
@@ -352,18 +368,18 @@ void follow_til_corner2(int T){
 }
 
 void recovery1(){
-	go_backwards(126);
+	/*go_backwards(126);
 	while(lfsensor == 0b000){
 		read_sensors();
-	}
+	}*/
 	//stop();
 	if(rstatus.last_white == 1){
-		spin_left();
+		spin_right();
 		while(lfsensor != 0b010){
 			read_sensors();
 		}
 	}else {
-		spin_right();
+		spin_left();
 		while(lfsensor != 0b010){
 			read_sensors();
 		}
