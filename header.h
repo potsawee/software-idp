@@ -59,7 +59,7 @@ void go_assembling();
 void go_DF();
 void go_DH();
 void go_back_to_P();
-
+void go_back_to_S();
 
 //// Functions in mechanisms.cc ////
 void read_thermistor();
@@ -70,7 +70,8 @@ void place_casting(); //to place a casting at either DF or DH.
 
 
 //// Functions in line_following.cc ////
-void adjust_initial_position();
+void adjust1();
+void adjust2();
 void read_sensors();
 void follow_forwards(int n); // stop at the n-th junction (1 means the first junction)
 void follow_backwards(int n); // stop at the n-th junction

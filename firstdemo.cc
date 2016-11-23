@@ -13,7 +13,6 @@ robot_link  rlink;                            // datatype for the robot link
 stopwatch watch;
 robot_status rstatus;
 int lfsensor;
-void ConvertToBinary(int n);
 
 
 int main (){
@@ -39,45 +38,19 @@ int main (){
 	cout << "This is test route1 ." << endl;
 	
 	watch.start();
+	if(0){
+		go_to_P_from_S();
+		go_DH();
+	}
+	
+	if(1){
+		go_to_P_from_S();
+		rstatus.good_casting_done = 2;
+		go_assembling();
+	}
 
-	//this is from S to P to D1 and back to P
-while(0){
-	//S to P
-	follow_forwards(1);
-	
-	//p to D1
-	adjust2();
-	delay(1000);
-	turn_left();
-	follow_forwards(1);
-	follow_til_corner(3800);
-	follow_curve(1);
-	turn_right();
-	
-	//D1 back
-	adjust1();
-	rotate180(ACW);
-	follow_til_corner2(4700);
-	follow_forwards(1);
-	
-	//
-	turn_left();
-	follow_til_corner2(8500);
-	turn_right();
-	follow_forwards(2);
-	turn_left(); //at P
-	
-	//back to S
-	adjust1();
-	rotate180(ACW);
-	follow_forwards(2);
-	
-	//next loop
-	rotate180(ACW);
 
-}
-	rstatus.destination = D3;
-	go_back_to_P();
 }  
+
 
 

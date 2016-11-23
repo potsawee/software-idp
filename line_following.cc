@@ -2,7 +2,27 @@
 using namespace std;
 
 
-void adjust_initial_position(){
+void adjust1(){
+	read_sensors();
+	cout << "start adjusting1" << endl;
+	go_backwards(126);
+	cout << "back adjusting1" << endl;
+	while(lfsensor != 0b111){
+		//cout << "read1" << endl;
+		//cout << "motor 1 speed = " << rlink.request(MOTOR_1) << endl;
+		//cout << "motor 2 speed = " << rlink.request(MOTOR_2) << endl;
+		read_sensors();
+		//go_backwards(126);
+	}
+	while(lfsensor == 0b111){
+		//cout << "read2" << endl;
+		read_sensors();
+	}
+	cout << "stop adjusting1" << endl;
+	stop();
+	
+}
+void adjust2(){
 	read_sensors();
 	cout << "start adjusting" << endl;
 	go_backwards(126);
@@ -19,10 +39,12 @@ void adjust_initial_position(){
 		read_sensors();
 	}
 	cout << "stop adjusting" << endl;
+	
+	go_forwards(80);
+	delay(350);
 	stop();
 	
 }
-
 void read_sensors(){
 	int s = rlink.request(READ_PORT_5);
 	lfsensor = s bitand 0b111; 
