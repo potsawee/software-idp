@@ -45,7 +45,7 @@ void turn_right()
 
 void spin_left(){ // will be used in recovery but NEED to be calibrate
 	rlink.command (RAMP_TIME,0);
-	rlink.command(MOTOR_1_GO, 65);
+	rlink.command(MOTOR_1_GO, 62);
 	rlink.command(MOTOR_3_GO, 120);
 }
 void spin_right(){

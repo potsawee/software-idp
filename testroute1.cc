@@ -41,7 +41,7 @@ int main (){
 	watch.start();
 
 	//this is from S to P to D1 and back to P
-while(1){
+while(0){
 	//S to P
 	follow_forwards(2);
 	
@@ -50,7 +50,7 @@ while(1){
 	delay(1000);
 	turn_left();
 	follow_forwards(1);
-	follow_til_corner(3800);
+	follow_til_corner(3800); // the time taken from DH to the nearby corner is about 4200
 	follow_curve(1);
 	turn_right();
 	
@@ -77,9 +77,11 @@ while(1){
 
 }
 	
+	follow_forwards(1);
 
 	
-}  //
+	
+}  
 
   
   

@@ -40,45 +40,40 @@ int main (){
 	cout << "This is test route 2." << endl;
 	
 	watch.start();
-
-	//this is from S to P to D1 and back to P
-while(0){
-	//S to P
-	follow_forwards(2);
-	
-	//p to D1
-	//adjust_initial_position();
-	turn_left();
-	follow_forwards(1);
-	follow_til_corner(3800);
-	follow_curve(1);
-	turn_right();
-	
-	//D1 back
-	//adjust_initial_position();
-	turn_left();
-	follow_forwards(2);
-	turn_right();
-	//adjust_initial_position();
-	rotate180(ACW);
-	follow_forwards(4);
-	turn_left();
-	follow_forwards(3);	
-	//back to S
-}
-rstatus.destination = D1;
 	go_to_P_from_S();
+	rstatus.good_casting_done=0;
+	
+	
 	rstatus.destination = D1;
 	cout << "Going to D1" << endl;
 	go_assembling();
 	cout << "Going to P" << endl;
 	go_back_to_P();
+	
+	rstatus.destination = D2;
+	cout << "Going to D2" << endl;
+	go_assembling();
+	cout << "Going to P" << endl;
+	go_back_to_P();
+	
 	rstatus.destination = D3;
 	cout << "Going to D3" << endl;
 	go_assembling();
 	cout << "Going to P" << endl;
 	go_back_to_P();
 	
+	
+	rstatus.destination = DH;
+	cout << "Going to DH" << endl;
+	go_assembling();
+	cout << "Going to P" << endl;
+	go_back_to_P();
+	
+	rstatus.destination = DF;
+	cout << "Going to DF" << endl;
+	go_assembling();
+	cout << "Going to P" << endl;
+	go_back_to_P();
  
 }  
 

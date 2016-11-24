@@ -33,17 +33,15 @@ enum rotation {
 
 class robot_status {
 	public:
-		casting_type casting;
 		int job_done;
-        int good_casting_done;
+        	int good_casting_done;
 		location destination;
 		int last_white;
 		int defect_indicator; //it is 1 when the casting has defect.
         int tsensor;       // themistor, it is 1 when the casting is too hot.
 		//constructor
 		robot_status(){
-                       
-			casting = NONE;
+              
 			// to job_done be initialise in the main.cc
 			destination = P;
 			last_white = 0; // 1 means LEFT = last white // 2 means RIGHT
@@ -72,13 +70,10 @@ void adjust1();
 void adjust2();
 void read_sensors();
 void follow_forwards(int n); // stop at the n-th junction (1 means the first junction)
-void follow_backwards(int n); // stop at the n-th junction
-/*void follow_turn_right();// maybe just use turn_right instead of this function!
-void follow_turn_left();*/
+void follow_by_time(int T);
 void follow_til_corner(int T);
 void follow_til_corner2(int T);
 void follow_curve(int n); //it will stop at the n-th junction after the curve
-void follow_curve_back(); //from the start of the curve to P
 void rotate180(rotation R);
 void recovery1();
 void recovery2();
