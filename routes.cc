@@ -39,8 +39,11 @@ void go_to_P_from_S()
 	//the robot should just in front of the block
 }
 
+
 void go_assembling()
 {
+  if (rstatus.destination<4)   //D123
+  {
 	adjust2();
 	turn_left();
 	follow_forwards(1);
@@ -50,11 +53,9 @@ void go_assembling()
 	//the robot should just in front of the block
 	rstatus.good_casting_done ++;
 	rstatus.job_done ++;
-}
-
-
-void go_DF()
-{
+  }
+  else if (rstatus.destination==4) //DF
+  {
 	adjust2();
     turn_left();
 	follow_forwards(1);
@@ -66,16 +67,21 @@ void go_DF()
 	turn_left();
 	//the robot should just in front of the block              
 	rstatus.job_done ++;
-	}
-void go_DH()
-{
+  }
+  else if (rstatus.destination==5)  //DH 
+  {
 	adjust2();
     turn_left();
 	follow_forwards(1);
 	turn_right();
  	//the robot should just in front of the block              
 	rstatus.job_done ++;
-}
+  }
+}//end of the function
+
+
+
+
 
 void go_back_to_P()
 {

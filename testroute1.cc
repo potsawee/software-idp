@@ -41,9 +41,9 @@ int main (){
 	watch.start();
 
 	//this is from S to P to D1 and back to P
-while(0){
+while(1){
 	//S to P
-	follow_forwards(1);
+	follow_forwards(2);
 	
 	//p to D1
 	adjust2();
@@ -57,7 +57,7 @@ while(0){
 	//D1 back
 	adjust1();
 	rotate180(ACW);
-	follow_til_corner2(4700);
+	follow_til_corner2(4000);
 	follow_forwards(1);
 	
 	//
@@ -76,8 +76,25 @@ while(0){
 	rotate180(ACW);
 
 }
-	rstatus.destination = D3;
-	go_back_to_P();
-}  
+	
 
+	
+}  //
+
+  
+  
+  
+  ///find time corner 2
+  /*  
+	follow_forwards(1);
+	turn_right();
+	//back to S
+	adjust1();
+	rotate180(ACW);
+	int t1 = watch.read();
+	follow_til_corner2(4000);
+	int t2 = watch.read();
+	stop();
+	cout << "t = " << t2 - t1 << endl;
+	*/
 

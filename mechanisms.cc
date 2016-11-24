@@ -21,6 +21,12 @@ void grab_object(){  //to use actuator, front motors to grab an object, and ther
 read_thermistor();
 defect_testing();
 
+///using the switches
+/*
+		int sw = rlink.request(READ_PORT_2);
+		int s1 = sw bitand 0b10;
+		int s2 = sw bitand 0b100;*/
+
 
 }
 void assemble_casting(){ //to assemble a casting into an engine.
@@ -29,3 +35,4 @@ void assemble_casting(){ //to assemble a casting into an engine.
 void place_casting(){ //to place a casting at either DF or DH.
 	
 }
+

@@ -56,8 +56,6 @@ class robot_status {
 void find_destination();
 void go_to_P_from_S();
 void go_assembling();
-void go_DF();
-void go_DH();
 void go_back_to_P();
 void go_back_to_S();
 
