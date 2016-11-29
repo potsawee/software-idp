@@ -29,7 +29,7 @@ void find_destination()
 	    }//end of switch
     }
     else
-    cout<<"error about counting number of good castings"<<endl;
+        cout<<"error about counting number of good castings"<<endl;
 }
 
 
@@ -77,10 +77,6 @@ void go_assembling()
 	rstatus.job_done ++;
   }
 }//end of the function
-
-
-
-
 
 void go_back_to_P()
 {

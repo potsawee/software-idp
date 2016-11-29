@@ -8,9 +8,7 @@ void read_thermistor(){// tsensor = 1 means temp > 30 deg
 }
 
 void defect_testing(){
-	                    
-                    
-  rstatus.defect_indicator=0;// to be changed
+    rstatus.defect_indicator=0;// to be changed
 }
 
 void grab_object(){  //to use actuator, front motors to grab an object, and thermistor , to detect whether it has a defect, to find the orientation, to measure if its temperature is more than 30 deg.
@@ -35,10 +33,24 @@ void assemble_casting(){ //to assemble a casting into an engine.
 void place_casting(){ //to place a casting at either DF or DH.
 	
 }
-void use_actuator(){
-	rlink.command (WRITE_PORT_2, 0b10000000);
-	delay(1000);
-	rlink.command (WRITE_PORT_2, 0b000);
-	delay(1000);
+void set_actuator(int n){
+    if(n == 1){
+        rlink.command (WRITE_PORT_2, 0b10000000);
+        cout << "Set the actuator = 1" << endl;
+    }else if(n == 0){
+        rlink.command (WRITE_PORT_2, 0b00000000);
+        cout << "Set the actuator = 0" << endl;
+    }
 	//most significant bit at 010
+}
+
+void rotate_grabber(int t, rotation R){
+    int x = 0;
+    if(R == ACW) // not sure which way is ACW.
+        x += 0x80;
+    rlink.command (RAMP_TIME,0);
+    rlink.command(MOTOR_4_GO, 127 + x); // at the maximum speed
+    delay(t);
+    rlink.command(MOTOR_4_GO, 0);
+    cout << "Rotate the grabber for " << t << " ms." << endl;
 }

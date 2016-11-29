@@ -63,6 +63,8 @@ void defect_testing();
 void grab_object();   //to use actuator, front motors to grab an object, and thermistor , to detect whether it has a defect, to find the orientation, to measure if its temperature is more than 30 deg.
 void assemble_casting(); //to assemble a casting into an engine.
 void place_casting(); //to place a casting at either DF or DH.
+void set_actuator(int n); //set the actuator to 1 or 0.
+void rotate_grabber(int t, rotation R);
 
 
 //// Functions in line_following.cc ////
@@ -77,6 +79,8 @@ void follow_curve(int n); //it will stop at the n-th junction after the curve
 void rotate180(rotation R);
 void recovery1();
 void recovery2();
+void align_pickup();
+void align_assemble();
 
 
 //// Functions in movements.cc ////

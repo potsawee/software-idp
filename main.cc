@@ -39,9 +39,11 @@ int main (){
 	go_to_P_from_S();
 
 	do{
+        align_pickup();
 		grab_object();	 // now rstatus should have the updated values.
 		find_destination();
 		go_assembling();
+        align_assemble();
 		assemble_casting();
 		go_back_to_P();
 	}while(rstatus.job_done < 5);

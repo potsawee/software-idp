@@ -320,3 +320,10 @@ void recovery1(){
 void recovery2(){
 
 }
+
+void align_pickup(){
+
+}
+void align_assemble(){
+
+}
