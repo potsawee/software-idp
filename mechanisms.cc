@@ -35,4 +35,10 @@ void assemble_casting(){ //to assemble a casting into an engine.
 void place_casting(){ //to place a casting at either DF or DH.
 	
 }
-
+void use_actuator(){
+	rlink.command (WRITE_PORT_2, 0b10000000);
+	delay(1000);
+	rlink.command (WRITE_PORT_2, 0b000);
+	delay(1000);
+	//most significant bit at 010
+}

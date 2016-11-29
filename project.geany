@@ -1,15 +1,13 @@
 [project]
-name=testroute1
+name=firstdemo
 base_path=/homes/pm574/idp_shared/Common/software-idp
 make_in_base_path=true
 description=1B IDP
-run_cmd=./testroute1
+run_cmd=./firstdemo
 
 [files]
 current_page=0
-FILE_NAME_0=1624;C++;0;EUTF-8;1;1;0;%2Fhomes%2Fpm574%2Fidp_shared%2FCommon%2Fsoftware-idp%2Ftestroute1.cc;0;4
-FILE_NAME_1=0;C++;0;EUTF-8;1;1;0;movements.cc;0;4
-FILE_NAME_2=0;C++;0;EUTF-8;1;1;0;line_following.cc;0;4
+FILE_NAME_0=0;C++;0;EUTF-8;1;1;0;firstdemo.cc;0;4
 
 [indentation]
 indent_width=4

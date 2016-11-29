@@ -14,6 +14,7 @@ stopwatch watch;
 robot_status rstatus;
 int lfsensor;
 
+void use_actuator();
 
 int main (){
 	
@@ -35,22 +36,29 @@ int main (){
 	if (val == TEST_INSTRUCTION_RESULT) {     // check result
 		cout << "Test passed" << endl;                          // all OK, finish
 	}
-	cout << "This is test route1 ." << endl;
+	cout << "first demo." << endl;
 	
-	watch.start();
-	if(0){
-		go_to_P_from_S();
-		go_DH();
+	//use_actuator();
+	cout << "use_actuator" << endl;
+	
+	while(1){
+		int r = rlink.request(READ_PORT_2);
+		//int a = r bitand 0b1000000; // closest distance  7th
+		//int b = r bitand 0b100000; // 2nd most           6th
+		int c = r bitand 0b10000;
+		
+		cout << "c = " << c << endl; 
+		delay(500);
 	}
 	
-	if(1){
-		go_to_P_from_S();
-		rstatus.good_casting_done = 2;
-		go_assembling();
-	}
-
 
 }  
 
-
+void use_actuator(){
+	rlink.command (WRITE_PORT_2, 0b10000000);        //   8th
+	delay(1000);
+	rlink.command (WRITE_PORT_2, 0b000);
+	delay(1000);
+	//most significant bit at 010
+}
 
