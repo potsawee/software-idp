@@ -5,14 +5,16 @@
 #include <delay.h>
 #include <iomanip>
 #include "header.h"
-using namespace std;
+#include <string>
+using namespace std;  
 
 #define ROBOT_NUM  16                         // The id number (see below)
 robot_link  rlink;                            // datatype for the robot link
 stopwatch watch;
 robot_status rstatus;
 int lfsensor;
-int tsensor;
+
+void use_actuator();
 
 int main (){
 	
@@ -34,25 +36,29 @@ int main (){
 	if (val == TEST_INSTRUCTION_RESULT) {     // check result
 		cout << "Test passed" << endl;                          // all OK, finish
 	}
-
-	// go to the pick-up place
-	go_to_P_from_S();
-
-	do{
-		grab_object();	 // now rstatus should have the updated values.
-		find_destination();
-		go_assembling();
-		assemble_casting();
-		go_back_to_P();
-	}while(rstatus.job_done < 5);
+	cout << "first demo." << endl;
 	
-// now it arrives at the destination, call place_object()
+	//use_actuator();
+	cout << "use_actuator" << endl;
 	
-// with information about the case, execute route_back 1,2,3 etc;
-// if not done goes to the first command i.e. move_s_to_p
+	while(1){
+		int r = rlink.request(READ_PORT_2);
+		//int a = r bitand 0b1000000; // closest distance  7th
+		//int b = r bitand 0b100000; // 2nd most           6th
+		int c = r bitand 0b10000;
+		
+		cout << "c = " << c << endl; 
+		delay(500);
+	}
+	
 
-  
-	return 0;  
 }  
 
+void use_actuator(){
+	rlink.command (WRITE_PORT_2, 0b10000000);        //   8th
+	delay(1000);
+	rlink.command (WRITE_PORT_2, 0b000);
+	delay(1000);
+	//most significant bit at 010
+}
 

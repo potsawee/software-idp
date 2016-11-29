@@ -13,19 +13,19 @@ void find_destination()
 	{
 		switch(rstatus.good_casting_done){
 	    case 0:
-		rstatus.destination=D1;		
-		break;
+			rstatus.destination=D1;		
+			break;
 		case 1:
-		rstatus.destination=D2;		
-		break;
+			rstatus.destination=D2;		
+			break;
 		case 2:
-		rstatus.destination=D3;		
-		break;
+			rstatus.destination=D3;		
+			break;
 		case 3:
-		cout<<"all three castings have been delivered already!"<<endl;
-		break;
+			cout<<"all three castings have been delivered already!"<<endl;
+			break;
 		default: cout<<"error with counting number of good casting done"<<endl;
-        break;
+			break;
 	    }//end of switch
     }
     else
@@ -33,132 +33,176 @@ void find_destination()
 }
 
 
-
 void go_to_P_from_S()
 {
 	follow_forwards(2);
-	//codes for go forwards a little bit until the actuator touches the sample.	
+	//the robot should just in front of the block
 }
+
 
 void go_assembling()
 {
-	follow_backwards(5);
-	follow_turn_left();
-	follow_forwards(4); //the robot should stop at the line in front of D3
-	
-	switch(rstatus.destination){
-	
-	   case D1:
-		 follow_turn_right();
-		 follow_forwards(2);
-		 follow_turn_left();
-		 //codes for go forwards a little bit until the actuator touches the sample.
-		 break;
-	
-	   case D2:
-		 follow_turn_right();
-		 follow_forwards(1);
-		 follow_turn_left();
-		 //codes for go forwards a little bit until the actuator touches the sample.
-		 break;
-		
-	   case D3:
-		//codes for go forwards a little bit until the actuator touches the sample.
-		break;
-		
-	   default: cout<<"error when going to the destination"<<endl;
-             break;
-	}
+  if (rstatus.destination<4)   //D123
+  {
+	adjust2();
+	turn_left();
+	follow_forwards(1);
+	follow_til_corner(3800);
+	follow_curve(rstatus.good_casting_done+1);
+	turn_right();
+	//the robot should just in front of the block
 	rstatus.good_casting_done ++;
 	rstatus.job_done ++;
-}
-
-
-void go_DF()
-{
-	
-    follow_backwards(5);
-	follow_turn_left();
-	follow_forwards(3);
-	follow_turn_left();
-	                    //codes for go forwards a little bit until the actuator touches the sample.
-	rstatus.job_done ++;
-	}
-void go_DH()
-{
-  
-	follow_backwards(1);
-	follow_turn_left();
+  }
+  else if (rstatus.destination==4) //DF
+  {
+	adjust2();
+    turn_left();
 	follow_forwards(1);
-	follow_turn_right();
-	                   //codes for go forwards a little bit until the actuator touches the sample.
+	turn_left();
+	follow_forwards(2);
+	turn_right();
+	follow_forwards(2);
+	turn_left();
+	//the robot should just in front of the block              
 	rstatus.job_done ++;
-}
+  }
+  else if (rstatus.destination==5)  //DH 
+  {
+	adjust2();
+    turn_left();
+	follow_forwards(1);
+	turn_right();
+ 	//the robot should just in front of the block              
+	rstatus.job_done ++;
+  }
+}//end of the function
+
+
+
+
 
 void go_back_to_P()
 {
-	int complete_indicator;
-	if(rstatus.job_done==5)
-	complete_indicator=1;
-    else
-    complete_indicator=0;
-    
+  switch(rstatus.destination){
+	 
+		case 1: //D1
+			cout<<"GO BACK FROM D1 TO P"<<endl;
+			adjust1();
+			rotate180(ACW);
+			
+			follow_by_time(6000);
+			follow_forwards(2);
+			turn_left();
+			follow_forwards(1);
+			turn_right();
+			follow_forwards(1);
+			turn_left(); //at P		
+			break;
+		case 2:
+			cout<<"GO BACK FROM D2 TO P"<<endl;
+		    adjust2();
+			turn_left();
+			follow_forwards(1);
+			turn_right();
+			
+			
+		    adjust1();    ///////////NOW IT IS AT D3
+			rotate180(ACW);
+			follow_forwards(4);
+			turn_left();
+			follow_forwards(4);
+			
+			break;
+		case 3:
+			cout<<"GO BACK FROM D3 TO P"<<endl;
+			adjust1();
+			rotate180(ACW);
+			follow_forwards(4);
+			turn_left();
+			follow_forwards(4);
+			break;
+		case 4:
+			cout<<"GO BACK FROM DF TO P"<<endl;
+			adjust1();
+			turn_left();
+			follow_forwards(3);
+			turn_left();
+			follow_forwards(4);
+			break;
+		case 5:
+			cout<<"GO BACK FROM DT TO P"<<endl;
+			adjust1();
+			turn_right();
+			follow_forwards(1);
+			turn_left();  ///////   need to talk about the final position;
+			break;
+		default: cout<<"error with counting number of good casting done"<<endl;
+			break;	
+	}
+}
+void go_back_to_S()
+{
 	switch(rstatus.destination){
-	
-	case D1:
-		follow_backwards(1);
-		follow_turn_left();
-		follow_forwards(2);
-		follow_turn_left();
-		follow_forwards(4);
-		follow_turn_left();
-		follow_forwards(4-complete_indicator);
-		//codes for go forwards a little bit until the actuator touches the sample.
-		break;
-	
-	case D2:
-		follow_backwards(1);
-		follow_turn_left();
-		follow_forwards(1);
-		follow_turn_left();
-		follow_forwards(4);
-		follow_turn_left();
-		follow_forwards(4-complete_indicator);
-		//codes for go forwards a little bit until the actuator touches the sample.
-		break;
-		
-	case D3:
-		follow_backwards(5);
-		follow_turn_right();
-		follow_forwards(4-complete_indicator);
-		//codes for go forwards a little bit until the actuator touches the sample.
-		break;
-		
-	case DF:
-	   follow_backwards(1);
-	   follow_turn_left();
-	   follow_forwards(3);
-	   follow_turn_left();
-	   follow_forwards(4-complete_indicator); 
-	   //codes for go forwards a little bit until the actuator touches the sample.
-	   break;
-		
-	case DH:
-		follow_backwards(1);
-	    follow_turn_right();
-	    follow_forwards(1);
-	    if (complete_indicator==0)
-	    follow_turn_left();
-	    //codes for go forwards a little bit until the actuator touches the sample.
-	    else if (complete_indicator==1)
-	    follow_turn_right();
-	    follow_forwards(2);
-		break;
-		
-    default: cout<<"error when going pack to P"<<endl;
-             break;
-	} //end of switch
-		
-}//end of the function
+	 
+		case 1: 
+			cout<<"GO BACK FROM D1 TO S"<<endl;
+			adjust1();
+		    turn_left();/////////haven't finished	
+			follow_by_time(6000);
+			follow_forwards(1);
+			follow_forwards(1);
+			turn_left();
+			follow_til_corner2(8500);
+			turn_right();
+			follow_forwards(2);
+			turn_left(); 
+			
+			adjust1();    
+			rotate180(ACW);
+			follow_forwards(2);
+			break;
+		case 2:
+		    adjust1();
+			turn_left();
+			follow_forwards(1);
+			turn_right();
+		    adjust1();    ///////////NOW IT IS AT D3
+			rotate180(ACW);
+			follow_forwards(4);
+			turn_left();
+			follow_forwards(3);		
+			break;
+		case 3:
+			cout<<"GO BACK FROM D3 TO S"<<endl;
+			adjust1();
+			rotate180(ACW);
+			follow_forwards(4);
+			turn_left();
+			follow_forwards(3);
+			break;
+		case 4:
+			cout<<"GO BACK FROM DF TO S"<<endl;
+			adjust1();
+			turn_left();
+			follow_forwards(3);
+			turn_left();
+			follow_forwards(3);
+			break;
+		case 5:
+			cout<<"GO BACK FROM DH TO S"<<endl;
+			adjust1();
+			turn_right();
+			follow_forwards(1);
+			turn_left();  ///////   need to talk about the final position;
+			
+			adjust1();    
+			rotate180(ACW);
+			follow_forwards(2);
+			break;
+		default: cout<<"error with counting number of good casting done"<<endl;
+			break;	
+	}
+}
 
 

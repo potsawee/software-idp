@@ -1,8 +1,10 @@
 #include "header.h"
+using namespace std;
 
-void read_thermistor(){
+void read_thermistor(){// tsensor = 1 means temp > 30 deg
 	int s = rlink.request(READ_PORT_5);
-	rstatus.tsensor = s bitand 0b1000; 
+	rstatus.tsensor = (s bitand 0b10000)/16;
+	cout << rstatus.tsensor << endl; 
 }
 
 void defect_testing(){
@@ -19,6 +21,12 @@ void grab_object(){  //to use actuator, front motors to grab an object, and ther
 read_thermistor();
 defect_testing();
 
+///using the switches
+/*
+		int sw = rlink.request(READ_PORT_2);
+		int s1 = sw bitand 0b10;
+		int s2 = sw bitand 0b100;*/
+
 
 }
 void assemble_casting(){ //to assemble a casting into an engine.
@@ -26,4 +34,11 @@ void assemble_casting(){ //to assemble a casting into an engine.
 }
 void place_casting(){ //to place a casting at either DF or DH.
 	
+}
+void use_actuator(){
+	rlink.command (WRITE_PORT_2, 0b10000000);
+	delay(1000);
+	rlink.command (WRITE_PORT_2, 0b000);
+	delay(1000);
+	//most significant bit at 010
 }

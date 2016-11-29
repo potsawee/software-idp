@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <robot_instr.h>
 #include <robot_link.h>
@@ -5,14 +6,16 @@
 #include <delay.h>
 #include <iomanip>
 #include "header.h"
-using namespace std;
+#include <string>
+using namespace std;  
 
 #define ROBOT_NUM  16                         // The id number (see below)
 robot_link  rlink;                            // datatype for the robot link
 stopwatch watch;
 robot_status rstatus;
 int lfsensor;
-int tsensor;
+void ConvertToBinary(int n);
+
 
 int main (){
 	
@@ -34,25 +37,44 @@ int main (){
 	if (val == TEST_INSTRUCTION_RESULT) {     // check result
 		cout << "Test passed" << endl;                          // all OK, finish
 	}
-
-	// go to the pick-up place
+	cout << "This is test route 2." << endl;
+	
+	watch.start();
 	go_to_P_from_S();
-
-	do{
-		grab_object();	 // now rstatus should have the updated values.
-		find_destination();
-		go_assembling();
-		assemble_casting();
-		go_back_to_P();
-	}while(rstatus.job_done < 5);
+	rstatus.good_casting_done=0;
 	
-// now it arrives at the destination, call place_object()
 	
-// with information about the case, execute route_back 1,2,3 etc;
-// if not done goes to the first command i.e. move_s_to_p
-
-  
-	return 0;  
+	rstatus.destination = D1;
+	cout << "Going to D1" << endl;
+	go_assembling();
+	cout << "Going to P" << endl;
+	go_back_to_P();
+	
+	rstatus.destination = D2;
+	cout << "Going to D2" << endl;
+	go_assembling();
+	cout << "Going to P" << endl;
+	go_back_to_P();
+	
+	rstatus.destination = D3;
+	cout << "Going to D3" << endl;
+	go_assembling();
+	cout << "Going to P" << endl;
+	go_back_to_P();
+	
+	
+	rstatus.destination = DH;
+	cout << "Going to DH" << endl;
+	go_assembling();
+	cout << "Going to P" << endl;
+	go_back_to_P();
+	
+	rstatus.destination = DF;
+	cout << "Going to DF" << endl;
+	go_assembling();
+	cout << "Going to P" << endl;
+	go_back_to_P();
+ 
 }  
 
 

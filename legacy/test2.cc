@@ -5,14 +5,16 @@
 #include <delay.h>
 #include <iomanip>
 #include "header.h"
-using namespace std;
-
+#include <string>
+using namespace std;  
+ //LED off means ONE!!!
 #define ROBOT_NUM  16                         // The id number (see below)
 robot_link  rlink;                            // datatype for the robot link
 stopwatch watch;
 robot_status rstatus;
 int lfsensor;
-int tsensor;
+void ConvertToBinary(int n);
+
 
 int main (){
 	
@@ -34,25 +36,41 @@ int main (){
 	if (val == TEST_INSTRUCTION_RESULT) {     // check result
 		cout << "Test passed" << endl;                          // all OK, finish
 	}
-
-	// go to the pick-up place
-	go_to_P_from_S();
-
-	do{
-		grab_object();	 // now rstatus should have the updated values.
-		find_destination();
-		go_assembling();
-		assemble_casting();
-		go_back_to_P();
-	}while(rstatus.job_done < 5);
+	cout << "This is test 2." << endl;
 	
-// now it arrives at the destination, call place_object()
-	
-// with information about the case, execute route_back 1,2,3 etc;
-// if not done goes to the first command i.e. move_s_to_p
+	watch.start();
+	/*follow_forwards(4);
+	go_forwards(126);
+	delay(500);
+	adjust_initial_position();
+	turn_left();
+	follow_forwards(1);
+	follow_til_corner(3800);
+	follow_curve(1);
+	turn_right();
+	adjust_initial_position();
+	*/
+	while(1){
+	follow_forwards(1);
 
-  
+	adjust_initial_position();
+	rotate180(ACW);
+	
+	follow_til_corner2(2500);
+	follow_forwards(1);
+	rotate180(ACW);
+	
+	follow_til_corner(2500);
+	follow_forwards(1);
+}
+	go_backwards(100);
+	while(0){
+	cout << "motor 1 speed = " << rlink.request(MOTOR_1) << endl;
+		cout << "motor 2 speed = " << rlink.request(MOTOR_2) << endl;	
+	}
+
 	return 0;  
 }  
+
 
 
