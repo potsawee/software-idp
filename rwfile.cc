@@ -29,7 +29,7 @@ void read_job_done(){
 		case '0': rstatus.good_casting_done = 0; break;
 		case '1': rstatus.good_casting_done = 1; break;
 		case '2': rstatus.good_casting_done = 2; break;
-		case '3': rstatus.good_casting_done = 2; break;
+		case '3': rstatus.good_casting_done = 3; break;
 		default:
 			cout << "Good_casting_done is out of range" << endl;
 			rstatus.good_casting_done = 0;

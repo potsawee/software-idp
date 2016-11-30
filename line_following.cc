@@ -5,7 +5,7 @@ int k = 70;
 
 void adjust1(){
 	read_sensors();
-	cout << "start adjusting" << endl;
+	cout << "start adjusting1" << endl;
 	go_backwards(126);
 	//cout << "back adjusting1" << endl;
 	while(lfsensor != 0b111){
@@ -19,16 +19,16 @@ void adjust1(){
 }
 void adjust2(){
 	read_sensors();
-	cout << "start adjusting" << endl;
+	cout << "start adjusting2" << endl;
 	go_backwards(126);
-	cout << "back adjusting" << endl;
+	//cout << "back adjusting2" << endl;
 	while(lfsensor != 0b111){
 		read_sensors();
 	}
 	while(lfsensor == 0b111){
 		read_sensors();
 	}
-	cout << "stop adjusting" << endl;
+	cout << "stop adjusting2" << endl;
 	
 	go_forwards(80);
 	delay(350);
@@ -40,6 +40,7 @@ void read_sensors(){
 }
 // connect motor 1 to the left hand side.
 void follow_forwards(int n){
+	cout << "Start follow_forward" << endl;
 	int junc = 0;
 	//int k = 70; // need to calibrate this!
     go_forwards(126);
@@ -98,6 +99,7 @@ void follow_forwards(int n){
 }
 
 void follow_curve(int n){
+	cout << "Start follow_curve" << endl;
 	rlink.command (RAMP_TIME,0);
 	rlink.command(MOTOR_1_GO, 126/2); 
 	rlink.command(MOTOR_3_GO, 120 + 0x80);
@@ -110,6 +112,7 @@ void follow_curve(int n){
 }
 
 void follow_til_corner(int T){
+	cout << "Start follow_til_corner" << endl;
 	int t_start = watch.read();
 	int time = watch.read() - t_start;
     go_forwards(126);
@@ -146,11 +149,11 @@ void follow_til_corner(int T){
 					rstatus.last_white = 2;
 					break;
 				case 0b000:
-					cout << "need to recover... now BBB" << endl;
+					cout << "FC: need to recover... now BBB" << endl;
 					recovery1();
 					break;
 				default:
-					cout << "Sensors detect something unexpected!" << endl;
+					cout << "FC: Sensors detect something unexpected!" << endl;
 					stop();
 				
 			}//ending of switch
@@ -171,6 +174,7 @@ void follow_til_corner(int T){
 }
 
 void follow_til_corner2(int T){
+	cout << "Start follow_til_corner2" << endl;
 	int t_start = watch.read();
 	int time = watch.read() - t_start;
     go_forwards(126);
@@ -207,11 +211,11 @@ void follow_til_corner2(int T){
 					rstatus.last_white = 2;
 					break;
 				case 0b000:
-					cout << "need to recover... now BBB" << endl;
+					cout << "FC2: need to recover... now BBB" << endl;
 					recovery1();
 					break;
 				default:
-					cout << "Sensors detect something unexpected!" << endl;
+					cout << "FC2: Sensors detect something unexpected!" << endl;
 					stop();
 					moving = false;
 				
@@ -233,6 +237,7 @@ void follow_til_corner2(int T){
 }
 
 void follow_by_time(int T){
+	cout << "Start follow_by_time" << endl;
 	go_forwards(126);
 	int t0 = watch.read();
     while(watch.read()-t0 < T){
@@ -281,10 +286,14 @@ void follow_by_time(int T){
 }
 
 void rotate180(rotation R){
-	if(R == ACW)
+	if(R == ACW){
 		spin_left();
-	else if(R == CW)
+		cout << "Rotate 180 deg ACW" << endl;
+	}
+	else if(R == CW){
 		spin_right();
+		cout << "Rotate 180 deg CW" << endl;
+	}
 	else
 		cout << "rotation180 accpets either ACW for anti-clockwise or CW for clockwise" << endl;
 	read_sensors();
@@ -322,8 +331,9 @@ void recovery2(){
 }
 
 void align_pickup(){
-
+	cout << "Align for picking up" << endl;
 }
 void align_assemble(){
+	cout << "Align for assembling" << endl;
 
 }

@@ -54,3 +54,10 @@ void rotate_grabber(int t, rotation R){
     rlink.command(MOTOR_4_GO, 0);
     cout << "Rotate the grabber for " << t << " ms." << endl;
 }
+
+/* THIS is for the ultrasonic sensors.
+		int r = rlink.request(READ_PORT_2);
+		//int a = r bitand 0b1000000; // closest distance  7th
+		//int b = r bitand 0b100000; // 2nd most           6th
+		int c = r bitand 0b10000;
+*/

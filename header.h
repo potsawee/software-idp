@@ -34,7 +34,7 @@ enum rotation {
 class robot_status {
 	public:
 		int job_done;
-        	int good_casting_done;
+        int good_casting_done;
 		location destination;
 		int last_white;
 		int defect_indicator; //it is 1 when the casting has defect.

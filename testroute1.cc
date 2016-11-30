@@ -76,9 +76,12 @@ while(0){
 	rotate180(ACW);
 
 }
-	
-	follow_forwards(1);
-
+	while(1){
+	set_actuator(1);
+	delay(10000);
+	set_actuator(0);
+	delay(10000);
+}
 	
 	
 }  
