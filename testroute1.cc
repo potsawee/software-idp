@@ -50,7 +50,7 @@ while(0){
 	delay(1000);
 	turn_left();
 	follow_forwards(1);
-	follow_til_corner(3800); // the time taken from DH to the nearby corner is about 4200
+	follow_til_corner(1300); // the time taken from DH to the nearby corner is about 4200
 	follow_curve(1);
 	turn_right();
 	
@@ -76,18 +76,22 @@ while(0){
 	rotate180(ACW);
 
 }
-	while(1){
+while(0){
 	set_actuator(1);
-	delay(10000);
+	delay(2000);
 	set_actuator(0);
-	delay(10000);
-}
+	delay(2000);
 	
-	
-}  
+	}
 
+	
+rstatus.destination=D3;
+rstatus.good_casting_done=2;
+follow_forwards(1);
+go_assembling();
+//go_back_to_P();
   
-  
+}
   
   ///find time corner 2
   /*  

@@ -1,7 +1,7 @@
 #include "header.h"
 using namespace std;
 
-int k = 70;
+int k = 35;
 
 void adjust1(){
 	read_sensors();
@@ -30,8 +30,8 @@ void adjust2(){
 	}
 	cout << "stop adjusting2" << endl;
 	
-	go_forwards(80);
-	delay(350);
+	go_forwards(40);
+	delay(175);
 	stop();
 }
 void read_sensors(){
@@ -101,14 +101,70 @@ void follow_forwards(int n){
 void follow_curve(int n){
 	cout << "Start follow_curve" << endl;
 	rlink.command (RAMP_TIME,0);
-	rlink.command(MOTOR_1_GO, 126/2); 
-	rlink.command(MOTOR_3_GO, 120 + 0x80);
-	delay(3000);
+	rlink.command(MOTOR_1_GO, 126); 
+	rlink.command(MOTOR_3_GO, 125 + 0x80);
+	delay(1500);
 	read_sensors();
 	while(lfsensor == 0b000){
 		read_sensors();
 	}
-	follow_forwards(n);
+	
+	cout << "Start curve part 2" << endl;
+	int junc = 0;
+	//int k = 70; // need to calibrate this!
+    go_forwards(126/2);
+    bool moving = true;
+    while(moving){
+        read_sensors();
+        if(lfsensor != 0b010){
+			switch(lfsensor){
+				case 0b110:
+					//try to turn left
+					set_motors((126/2)-k,126/2);
+					while(lfsensor == 0b110){
+						read_sensors();
+					}
+					go_forwards(126/2);
+					break;
+				case 0b011:
+					//try to go right
+					set_motors(126/2,(126/2)-k);
+					while(lfsensor == 0b011){
+						read_sensors();
+					}
+					go_forwards(126/2);
+					break;
+				case 0b111:
+					//see a junction
+					junc++;
+					if(junc == n){
+						stop();
+						cout << "FF: Detect a junction (next command)" << endl;
+						moving = false;
+						break;
+					}
+					while(lfsensor == 0b111){
+						read_sensors();
+					}
+					break;
+				//recovery when the mid sensor reads BLACK
+				case 0b100:
+					rstatus.last_white = 1;
+					break;
+				case 0b001:
+					rstatus.last_white = 2;
+					break;
+				case 0b000:
+					cout << "FF: need to recover... now BBB" << endl;
+					recovery1();
+					break;
+				default:
+					cout << "FF: Sensors detect something unexpected!" << endl;
+					cout << "IRsensors = " << lfsensor << endl;
+					stop();
+			}//ending of switch
+		}// ending of if not 0b010
+    }
 }
 
 void follow_til_corner(int T){

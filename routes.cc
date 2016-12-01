@@ -47,7 +47,7 @@ void go_assembling()
 	adjust2();
 	turn_left();
 	follow_forwards(1);
-	follow_til_corner(3800);
+	follow_til_corner(1300);
 	follow_curve(rstatus.good_casting_done+1);
 	turn_right();
 	//the robot should just in front of the block
@@ -87,7 +87,7 @@ void go_back_to_P()
 			adjust1();
 			rotate180(ACW);
 			
-			follow_by_time(6000);
+			follow_by_time(3000);
 			follow_forwards(2);
 			turn_left();
 			follow_forwards(1);
