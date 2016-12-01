@@ -22,7 +22,7 @@ void read_job_done(){
 		case '4': rstatus.job_done = 4; break;
 		default:
 			cout << "Job_done is out of range" << endl;
-			rstatus.job_done = 0;
+			rstatus.job_done = 5;
 			break;
 	}
 	switch(gd){
@@ -32,7 +32,7 @@ void read_job_done(){
 		case '3': rstatus.good_casting_done = 3; break;
 		default:
 			cout << "Good_casting_done is out of range" << endl;
-			rstatus.good_casting_done = 0;
+			rstatus.good_casting_done = 4;
 			break;
 	}
 }

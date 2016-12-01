@@ -32,29 +32,49 @@ int main (){
 	int val = rlink.request (TEST_INSTRUCTION); 
 	
 	if (val == TEST_INSTRUCTION_RESULT) {     // check result
-		cout << "Test passed" << endl;                          // all OK, finish
+		cout << "Starttttt!!!!!" << endl;                          // all OK, finish
 	}
 
+
+	read_job_done();
+	cout << "Job done = " << rstatus.job_done << endl;
+
+	watch.start();
+	grabber_open();
+	
 	// go to the pick-up place
 	go_to_P_from_S();
 
 	do{
         align_pickup();
-		grab_object();	 // now rstatus should have the updated values.
+		grabber_closed();
 		find_destination();
 		go_assembling();
-        align_assemble();
-		assemble_casting();
+		
+		stop();
+		delay(2000);
+		grabber_open();
+		
+		write_job_done();
+		read_job_done();
+		cout << "Job done = " << rstatus.job_done << endl;
+		
 		go_back_to_P();
-	}while(rstatus.job_done < 5);
+		
+	}while(rstatus.job_done < 4);
 	
-// now it arrives at the destination, call place_object()
+	align_pickup();
+	grabber_closed();
+	find_destination();
+	go_assembling();
+		
+	stop();
+	delay(2000);
+	grabber_open();
 	
-// with information about the case, execute route_back 1,2,3 etc;
-// if not done goes to the first command i.e. move_s_to_p
+	go_back_to_S();
+	
 
-  
 	return 0;  
 }  
-
 

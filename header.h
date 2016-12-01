@@ -63,7 +63,9 @@ void defect_testing();
 void grab_object();   //to use actuator, front motors to grab an object, and thermistor , to detect whether it has a defect, to find the orientation, to measure if its temperature is more than 30 deg.
 void assemble_casting(); //to assemble a casting into an engine.
 void place_casting(); //to place a casting at either DF or DH.
-void set_actuator(int n); //set the actuator to 1 or 0.
+//void set_actuator(int n); //set the actuator to 1 or 0.
+void grabber_closed();
+void grabber_open();
 void rotate_grabber(int t, rotation R);
 
 
@@ -78,7 +80,7 @@ void follow_til_corner2(int T);
 void follow_curve(int n); //it will stop at the n-th junction after the curve
 void rotate180(rotation R);
 void recovery1();
-void recovery2();
+//void recovery2();
 void align_pickup();
 void align_assemble();
 
@@ -94,6 +96,7 @@ void set_motors(int v1, int v2);
 void set_motors_back(int v1, int v2);
 void spin_left();
 void spin_right();
+void turn_left2();
 
 //// rwfile.cc //// read/write
 void read_job_done();

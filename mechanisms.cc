@@ -19,29 +19,13 @@ void grab_object(){  //to use actuator, front motors to grab an object, and ther
 read_thermistor();
 defect_testing();
 
-///using the switches
+//using the switches
 /*
 		int sw = rlink.request(READ_PORT_2);
 		int s1 = sw bitand 0b10;
 		int s2 = sw bitand 0b100;*/
 
 
-}
-void assemble_casting(){ //to assemble a casting into an engine.
-	
-}
-void place_casting(){ //to place a casting at either DF or DH.
-	
-}
-void set_actuator(int n){
-    if(n == 1){
-        rlink.command (WRITE_PORT_2, 0b10000000);
-        cout << "Set the actuator = 1" << endl;
-    }else if(n == 0){
-        rlink.command (WRITE_PORT_2, 0b00000000);
-        cout << "Set the actuator = 0" << endl;
-    }
-	//most significant bit at 010
 }
 
 void rotate_grabber(int t, rotation R){
@@ -55,9 +39,30 @@ void rotate_grabber(int t, rotation R){
     cout << "Rotate the grabber for " << t << " ms." << endl;
 }
 
+void grabber_closed(){
+	rlink.command (WRITE_PORT_2, 0b00000000);
+	cout << "grabber closed" << endl;
+}
+
+void grabber_open(){
+	rlink.command (WRITE_PORT_2, 0b10000000);
+	cout << "grabber open" << endl;
+}
+
 /* THIS is for the ultrasonic sensors.
 		int r = rlink.request(READ_PORT_2);
 		//int a = r bitand 0b1000000; // closest distance  7th
 		//int b = r bitand 0b100000; // 2nd most           6th
 		int c = r bitand 0b10000;
 */
+/* using grabber open / closed instead.
+void set_actuator(int n){
+    if(n == 1){
+        rlink.command (WRITE_PORT_2, 0b10000000);
+        cout << "Set the actuator = 1" << endl;
+    }else if(n == 0){
+        rlink.command (WRITE_PORT_2, 0b00000000);
+        
+    }
+	//most significant bit at 010
+}*/

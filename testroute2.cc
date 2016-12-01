@@ -37,44 +37,13 @@ int main (){
 	if (val == TEST_INSTRUCTION_RESULT) {     // check result
 		cout << "Test passed" << endl;                          // all OK, finish
 	}
-	cout << "This is test route 2." << endl;
-	
-	watch.start();
-	go_to_P_from_S();
-	rstatus.good_casting_done=0;
-	
-	
-	rstatus.destination = D1;
-	cout << "Going to D1" << endl;
-	go_assembling();
-	cout << "Going to P" << endl;
-	go_back_to_P();
-	
-	rstatus.destination = D2;
-	cout << "Going to D2" << endl;
-	go_assembling();
-	cout << "Going to P" << endl;
-	go_back_to_P();
-	
-	rstatus.destination = D3;
-	cout << "Going to D3" << endl;
-	go_assembling();
-	cout << "Going to P" << endl;
-	go_back_to_P();
-	
-	
-	rstatus.destination = DH;
-	cout << "Going to DH" << endl;
-	go_assembling();
-	cout << "Going to P" << endl;
-	go_back_to_P();
-	
-	rstatus.destination = DF;
-	cout << "Going to DF" << endl;
-	go_assembling();
-	cout << "Going to P" << endl;
-	go_back_to_P();
- 
+	if(1){
+		follow_forwards(2);
+		turn_left2();
+		follow_forwards(1);
+
+}
+
 }  
 
 
