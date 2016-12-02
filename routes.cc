@@ -20,10 +20,10 @@ void find_destination()
 			rstatus.destination=D2;
 			break;
 		case 4:
-			rstatus.destination=DF;
+			rstatus.destination=D3;
 			break;
 		case 5:
-			rstatus.destination=D3;
+			rstatus.destination=DF;
 			break;
 		default:
 			break;
